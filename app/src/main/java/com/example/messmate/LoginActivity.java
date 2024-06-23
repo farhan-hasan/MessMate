@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Create an Intent to start the new activity
-                Toast.makeText(LoginActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
 
