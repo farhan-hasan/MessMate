@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/bg_color</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item> <!-- Requires a custom font in res/font directory -->
+    </style>
+
+    <style name="CustomBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@color/bg_color</item>
+        <item name="itemTextColor">@color/bg_color</item>
+        <item name="backgroundTint">@color/primary_color</item>
+    </style>
+</resources>

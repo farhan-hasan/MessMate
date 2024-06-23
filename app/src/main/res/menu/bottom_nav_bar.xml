@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_rent"
+        android:icon="@drawable/cashsvg"
+        android:iconTint="#fff"
+        android:title="Rent" />
+    <item
+        android:id="@+id/nav_meal"
+        android:icon="@drawable/mealsvg"
+        android:iconTint="#fff"
+        android:title="Meal" />
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/searchsvg"
+        android:iconTint="#fff"
+        android:title="Search Mess" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/personsvg"
+        android:iconTint="#fff"
+        android:title="Profile" />
+</menu>
