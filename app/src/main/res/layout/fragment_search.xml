@@ -1,75 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="30dp"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.RentFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/text_field_border"
+            android:ems="10"
+            android:inputType="text"
+            android:padding="10dp"
+            android:drawablePadding="10dp"
+            android:hint="Search for Mess"
+            android:drawableLeft="@drawable/personsvg"/>
 
-        <TextView
-            android:id="@+id/textView2"
+        <Button
+            style="?android:attr/absListViewStyle"
+            android:id="@+id/searchButton"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primary_color"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text="Search Fragment"
-            android:textColor="@color/primary_color"
-            android:textSize="36dp" />
-
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/b1"
-            android:layout_marginTop="20dp"
-            android:textSize="24dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="#Mess Number" />
-
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/b2"
-            android:layout_marginTop="20dp"
-            android:textSize="24dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="#Mess Number" />
-
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/b3"
-            android:layout_marginTop="20dp"
-            android:textSize="24dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="#Mess Number" />
-
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/b4"
-            android:layout_marginTop="20dp"
-            android:textSize="24dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="#Mess Number" />
-
-
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:id="@+id/searchMessListRecyclerView"/>
     </LinearLayout>
+
+
+
+
 
 
 </FrameLayout>

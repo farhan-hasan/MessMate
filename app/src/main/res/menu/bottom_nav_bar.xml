@@ -14,7 +14,7 @@
         android:id="@+id/nav_search"
         android:icon="@drawable/searchsvg"
         android:iconTint="#fff"
-        android:title="Search Mess" />
+        android:title="Search" />
 
     <item
         android:id="@+id/nav_profile"
