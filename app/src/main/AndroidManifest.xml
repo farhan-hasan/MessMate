@@ -13,13 +13,19 @@
         android:theme="@style/Theme.MessMate"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".screens.MealRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".screens.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".screens.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
