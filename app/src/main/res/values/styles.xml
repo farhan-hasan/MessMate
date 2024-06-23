@@ -11,4 +11,5 @@
         <item name="itemTextColor">@color/bg_color</item>
         <item name="backgroundTint">@color/primary_color</item>
     </style>
+
 </resources>

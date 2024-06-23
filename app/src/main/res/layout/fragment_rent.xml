@@ -1,53 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="30dp"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.RentFragment">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text="Rent Fragment"
-            android:textColor="@color/primary_color"
-            android:textSize="36dp" />
-
-        <include
-            android:id="@+id/custom_card_view"
-            android:layout_marginTop="10dp"
-            layout="@layout/custom_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/custom_card_view"
-            android:layout_marginTop="10dp"
-            layout="@layout/custom_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/custom_card_view"
-            layout="@layout/custom_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
-
-
-
-    </LinearLayout>
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:id="@+id/rentMessListRecyclerView"/>
 
 
 </FrameLayout>
