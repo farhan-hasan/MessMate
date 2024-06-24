@@ -23,6 +23,8 @@ import com.example.messmate.screens.RegisterActivity;
  */
 public class MealFragment extends Fragment {
 
+    Button mealRequestButton;
+
     public MealFragment() {
         // Required empty public constructor
     }
@@ -32,11 +34,19 @@ public class MealFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+//        View view = inflater.inflate(R.layout.fragment_meal, container, false);
+//
+//        mealRequestButton = view.findViewById(R.id.mealRequestButton);
+//        mealRequestButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getContext(), MealRequestActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         return inflater.inflate(R.layout.fragment_meal, container, false);
-
-
 
 
     }

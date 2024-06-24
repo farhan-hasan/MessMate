@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="20dp"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.RentFragment">
@@ -13,19 +10,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text="Profile Fragment"
+            android:text="My Profile"
+            android:layout_marginTop="20dp"
+            android:textSize="32dp"
             android:textColor="@color/primary_color"
-            android:textSize="36dp" />
+            android:fontFamily="@font/roboto_bold"
+            />
 
         <EditText
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"

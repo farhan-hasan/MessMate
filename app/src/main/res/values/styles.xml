@@ -6,6 +6,10 @@
         <item name="android:fontFamily">@font/roboto_bold</item> <!-- Requires a custom font in res/font directory -->
     </style>
 
+    <style name="CustomToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">#FFFFFF</item> <!-- White color for the back button -->
+    </style>
+
     <style name="CustomBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemIconTint">@color/bg_color</item>
         <item name="itemTextColor">@color/bg_color</item>
