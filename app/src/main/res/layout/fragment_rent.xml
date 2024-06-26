@@ -12,15 +12,33 @@
         android:orientation="vertical"
         >
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Mess"
-            android:textColor="@color/primary_color"
-            android:fontFamily="@font/roboto_bold"
-            android:layout_marginTop="20dp"
-            android:textSize="32dp"
-            />
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Mess"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="32dp"
+                />
+
+            <Button
+                style="?android:attr/absListViewStyle"
+                android:id="@+id/addMessButton"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/primary_color"
+                android:layout_width="100dp"
+                android:textColor="#FFF"
+                android:layout_height="50dp"
+                android:text="Add" />
+
+        </RelativeLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="20dp"

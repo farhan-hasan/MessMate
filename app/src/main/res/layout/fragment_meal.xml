@@ -14,12 +14,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mealManagementCard"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="#FFF"
             card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="8dp"
+            card_view:cardCornerRadius="20dp"
             card_view:cardElevation="5dp">
 
             <LinearLayout
@@ -51,12 +55,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mealRequestCard"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center"
+            android:backgroundTint="#FFF"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="10dp"
             card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="8dp"
+            card_view:cardCornerRadius="20dp"
             card_view:cardElevation="5dp">
 
             <LinearLayout

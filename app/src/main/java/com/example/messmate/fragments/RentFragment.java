@@ -1,5 +1,6 @@
 package com.example.messmate.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -10,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
 import com.example.messmate.models.MessListCardModel;
+import com.example.messmate.screens.HomeActivity;
+import com.example.messmate.screens.RentMessDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -53,7 +57,15 @@ public class RentFragment extends Fragment {
         messListCardItems.add(new MessListCardModel("10", "My mess 9", "Sylhet", "+8801723232323"));
         messListCardItems.add(new MessListCardModel("10", "My mess 10", "Sylhet", "+8801723232323"));
 
-        messListRecyclerAdapter = new MessListRecyclerAdapter(getActivity(), messListCardItems);
+        messListRecyclerAdapter = new MessListRecyclerAdapter(getActivity(), messListCardItems, new MessListRecyclerAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(MessListCardModel item) {
+                String message = "Clicked " + item.messName + " ";
+                startActivity(new Intent(getActivity(), RentMessDetailsActivity.class));
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setAdapter(messListRecyclerAdapter);
     }
 }
