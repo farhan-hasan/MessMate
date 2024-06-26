@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="#FFF"
             card_view:cardUseCompatPadding="true"
             card_view:cardCornerRadius="20dp"
             card_view:cardElevation="5dp">
@@ -58,6 +59,7 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center"
+            android:backgroundTint="#FFF"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="10dp"

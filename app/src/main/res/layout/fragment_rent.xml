@@ -33,6 +33,7 @@
                 android:layout_gravity="center"
                 android:backgroundTint="@color/primary_color"
                 android:layout_width="100dp"
+                android:textColor="#FFF"
                 android:layout_height="50dp"
                 android:text="Add" />
 
