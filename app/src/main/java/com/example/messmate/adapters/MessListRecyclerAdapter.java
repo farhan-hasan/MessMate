@@ -4,23 +4,33 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
 import com.example.messmate.models.MessListCardModel;
+import com.example.messmate.models.ResidentDetailsModel;
 
 import java.util.ArrayList;
 
 public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecyclerAdapter.ViewHolder> {
     Context context;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(MessListCardModel item);
+    }
     ArrayList<MessListCardModel> messList;
-    public MessListRecyclerAdapter(Context context, ArrayList<MessListCardModel> messList) {
+    public MessListRecyclerAdapter(Context context, ArrayList<MessListCardModel> messList, OnItemClickListener listener) {
         this.context = context;
         this.messList = messList;
+        this.listener = listener;
     }
+
 
     @NonNull
     @Override
@@ -32,12 +42,20 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.messName.setText(messList.get(position).messName);
-        holder.messAddress.setText(messList.get(position).messAddress);
-        holder.adminPhone.setText(messList.get(position).adminPhone);
-        holder.availableSeats.setText(messList.get(position).availabelSeats);
+        MessListCardModel item = messList.get(position);
+        holder.messName.setText(item.messName);
+        holder.messAddress.setText(item.messAddress);
+        holder.adminPhone.setText(item.adminPhone);
+        holder.availableSeats.setText(item.availableSeats);
 
         holder.itemView.setPadding(0, 0, 0, 0);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override
@@ -47,14 +65,15 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView messName, messAddress, adminPhone, availableSeats;
+        public CardView cardView;
         public ViewHolder(View itemView) {
             super(itemView);
             messName = itemView.findViewById(R.id.messNameTextView);
             messAddress = itemView.findViewById(R.id.messAddressTextView);
             adminPhone = itemView.findViewById(R.id.adminPhone);
             availableSeats = itemView.findViewById(R.id.availableSeatsTextView);
+            cardView = itemView.findViewById(R.id.mess_list_card_view);
         }
-
     }
 
 }

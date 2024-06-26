@@ -3,6 +3,7 @@ package com.example.messmate.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -23,7 +24,7 @@ import com.example.messmate.screens.RegisterActivity;
  */
 public class MealFragment extends Fragment {
 
-    Button mealRequestButton;
+    CardView cardView;
 
     public MealFragment() {
         // Required empty public constructor
@@ -33,20 +34,19 @@ public class MealFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_meal, container, false);
 
-//        View view = inflater.inflate(R.layout.fragment_meal, container, false);
-//
-//        mealRequestButton = view.findViewById(R.id.mealRequestButton);
-//        mealRequestButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), MealRequestActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        cardView = view.findViewById(R.id.mealRequestCard);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event
+                startActivity(new Intent(getActivity(), MealRequestActivity.class));
+            }
+        });
 
 
-        return inflater.inflate(R.layout.fragment_meal, container, false);
+        return view;
 
 
     }

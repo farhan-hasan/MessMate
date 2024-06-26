@@ -10,6 +10,10 @@
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="8dp"
         card_view:cardUseCompatPadding="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:id="@+id/mess_list_card_view"
         >
 
         <RelativeLayout
