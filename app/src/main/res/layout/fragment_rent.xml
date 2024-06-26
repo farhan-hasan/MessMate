@@ -28,7 +28,7 @@
 
             <Button
                 style="?android:attr/absListViewStyle"
-                android:id="@+id/profileSaveButton"
+                android:id="@+id/addMessButton"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/primary_color"

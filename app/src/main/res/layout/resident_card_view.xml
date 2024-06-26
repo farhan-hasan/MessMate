@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:backgroundTint="#FFF"
         card_view:cardCornerRadius="8dp"
         android:id="@+id/resident_card_view"
         card_view:cardElevation="4dp">
@@ -18,17 +19,8 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/residentImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="30dp"
-                android:src="@drawable/residentpersonsvg"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp" />
-
             <TextView
+                android:layout_marginTop="1dp"
                 android:id="@+id/residentNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,14 +29,13 @@
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_toEndOf="@id/residentImage"
-                android:layout_alignTop="@id/residentImage"
                 android:layout_marginBottom="4dp" />
 
             <TextView
                 android:id="@+id/residentEmailTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:text="Email: abc@gmail.com"
                 android:textColor="@color/primary_color"
                 android:fontFamily="@font/roboto_regular"
@@ -57,6 +48,7 @@
                 android:id="@+id/residentPhoneTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:text="Phone : +8801712334556"
                 android:textColor="@color/primary_color"
                 android:fontFamily="@font/roboto_regular"
@@ -65,15 +57,28 @@
                 android:layout_alignStart="@id/residentNameTextView" />
 
             <Button
-                android:id="@+id/buttonforbreakfast"
-                android:layout_width="60dp"
+                android:id="@+id/paidButton"
+                android:layout_width="85dp"
                 android:layout_height="40dp"
                 android:text="Unpaid"
                 android:backgroundTint="@color/primary_color"
                 android:textColor="@color/bg_color"
                 android:fontFamily="@font/roboto_regular"
-                android:textSize="10dp"
+                android:textSize="9dp"
                 android:layout_alignParentEnd="true"
+                android:layout_marginEnd="2dp" />
+
+            <Button
+                android:id="@+id/removeButton"
+                android:layout_width="85dp"
+                android:layout_height="40dp"
+                android:text="Remove"
+                android:backgroundTint="#C41E3A"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="9dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/paidButton"
                 android:layout_marginEnd="2dp" />
 
         </RelativeLayout>
