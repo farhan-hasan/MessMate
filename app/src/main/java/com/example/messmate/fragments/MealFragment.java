@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.messmate.R;
 import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.LoginActivity;
+import com.example.messmate.screens.MealManagementActivity;
 import com.example.messmate.screens.MealRequestActivity;
 import com.example.messmate.screens.RegisterActivity;
 
@@ -24,7 +25,7 @@ import com.example.messmate.screens.RegisterActivity;
  */
 public class MealFragment extends Fragment {
 
-    CardView cardView;
+    CardView mealRequestCardView, mealManagementCardView;
 
     public MealFragment() {
         // Required empty public constructor
@@ -36,12 +37,21 @@ public class MealFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
 
-        cardView = view.findViewById(R.id.mealRequestCard);
-        cardView.setOnClickListener(new View.OnClickListener() {
+        mealRequestCardView = view.findViewById(R.id.mealRequestCard);
+        mealRequestCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle the click event
                 startActivity(new Intent(getActivity(), MealRequestActivity.class));
+            }
+        });
+
+        mealManagementCardView = view.findViewById(R.id.mealManagementCard);
+        mealManagementCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event
+                startActivity(new Intent(getActivity(), MealManagementActivity.class));
             }
         });
 
