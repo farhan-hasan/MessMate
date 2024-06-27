@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         String userId = Constants.userKey; // Replace with the actual user ID
-        userRef = database.getReference("Users").child(userId);
+        userRef = database.getReference("users").child(userId);
 
         nameEditText = view.findViewById(R.id.nameEditText);
         phoneEditText = view.findViewById(R.id.phoneEditText);
