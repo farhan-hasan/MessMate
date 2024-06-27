@@ -18,12 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/text_field_border"
+            android:textColor="@color/primary_color"
+            android:textColorHint="@color/primary_color"
             android:ems="10"
             android:inputType="text"
             android:padding="10dp"
             android:drawablePadding="10dp"
-            android:hint="Search for Mess"
-            android:drawableLeft="@drawable/personsvg"/>
+            android:hint="Search for Mess"/>
 
         <Button
             style="?android:attr/absListViewStyle"
