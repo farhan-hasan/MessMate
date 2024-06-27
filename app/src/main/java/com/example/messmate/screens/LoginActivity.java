@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText inEmail,inPassword;
     Button LoginButton,LoginActivityRegisterButton;
     ProgressDialog progressDialog;
-    FirebaseAuth mAuth;
+    FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         inPassword=findViewById(R.id.passwordEditText);
 
         LoginButton = findViewById(R.id.button3);
-        mAuth=FirebaseAuth.getInstance();
+        firebaseAuth =FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         LoginActivityRegisterButton = findViewById(R.id.loginActivityRegisterButton);
         LoginActivityRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Create an Intent to start the new activity
-                perforLogin();
+                performLogin();
 
                // Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 //startActivity(intent);
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void perforLogin() {
+    private void performLogin() {
         String email=inEmail.getText().toString();
         String password=inPassword.getText().toString();
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.setTitle("Login");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){

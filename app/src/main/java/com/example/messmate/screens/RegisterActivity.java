@@ -18,16 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 EditText inEmail,inPassword,inName,inConfirmPassword,inPhone;
 Button RegisterButton,RegisterActivityLoginButton;
 //String emailRegex="[a-zA-Z]{3,10}\\s*[a-zA-Z]*";
 ProgressDialog progressDialog;
-FirebaseAuth mAuth;
+FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -43,7 +40,7 @@ FirebaseAuth mAuth;
 
         RegisterButton = findViewById(R.id.registerButton);
         RegisterActivityLoginButton = findViewById(R.id.registerActivityLoginButton);
-        mAuth=FirebaseAuth.getInstance();
+        firebaseAuth =FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         RegisterActivityLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +84,7 @@ FirebaseAuth mAuth;
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                  if(task.isSuccessful()){
