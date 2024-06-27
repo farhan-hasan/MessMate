@@ -18,6 +18,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RegisterActivity extends AppCompatActivity {
 EditText inEmail,inPassword,inName,inConfirmPassword,inPhone;
@@ -25,6 +31,9 @@ Button RegisterButton,RegisterActivityLoginButton;
 //String emailRegex="[a-zA-Z]{3,10}\\s*[a-zA-Z]*";
 ProgressDialog progressDialog;
 FirebaseAuth firebaseAuth;
+
+FirebaseDatabase database;
+DatabaseReference userRef;
 
 
     @Override
@@ -34,9 +43,9 @@ FirebaseAuth firebaseAuth;
 
         inEmail=findViewById(R.id.emailEditText);
         inPassword=findViewById(R.id.passwordEditText);
-        //inName=findViewById(R.id.nameEditText);
+        inName=findViewById(R.id.nameEditText);
         inConfirmPassword=findViewById(R.id.confirmPasswordEditText);
-       // inPhone=findViewById(R.id.phoneEditText);
+        inPhone=findViewById(R.id.phoneEditText);
 
         RegisterButton = findViewById(R.id.registerButton);
         RegisterActivityLoginButton = findViewById(R.id.registerActivityLoginButton);
@@ -66,6 +75,8 @@ FirebaseAuth firebaseAuth;
     }
 
     private void PerForAuth() {
+        String name = inName.getText().toString();
+        String phone = inPhone.getText().toString();
         String email=inEmail.getText().toString();
         String password=inPassword.getText().toString();
         String confirmPassword=inConfirmPassword.getText().toString();
@@ -80,6 +91,31 @@ FirebaseAuth firebaseAuth;
 
         }
         else {
+            {
+                database = FirebaseDatabase.getInstance();
+                userRef = database.getReference();
+
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("username", name);
+                userData.put("email", email);
+                userData.put("phone", phone);
+
+
+                userRef.child("users").child(email.replace(".","")).setValue(userData)
+                        .addOnCompleteListener(task1 -> {
+                            if(task1.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Data saved", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(RegisterActivity.this, "Failed to save data", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        });
+
+
+            }
+
+
             progressDialog.setMessage("Registration...");
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
@@ -90,8 +126,11 @@ FirebaseAuth firebaseAuth;
                  if(task.isSuccessful()){
                      progressDialog.dismiss();
                      Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                     startActivity(intent);
 
+//                   Data insert in database
+
+
+                     startActivity(intent);
                      Toast.makeText(RegisterActivity.this, "Registration Complete", Toast.LENGTH_SHORT).show();
 
                  }else {
@@ -100,7 +139,7 @@ FirebaseAuth firebaseAuth;
                          Toast.makeText(RegisterActivity.this, "You are already Registered", Toast.LENGTH_SHORT).show();
                      }else {
                      progressDialog.dismiss();
-                     Toast.makeText(RegisterActivity.this, "Error"+task.getException(), Toast.LENGTH_SHORT).show();
+                     Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                  }}
                 }
             });
