@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.messmate.R;
 import com.example.messmate.models.MessListCardModel;
 import com.example.messmate.models.ResidentDetailsModel;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.ArrayList;
 
@@ -56,6 +59,9 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
                 listener.onItemClick(item);
             }
         });
+
+
+
     }
 
     @Override
@@ -65,6 +71,7 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView messName, messAddress, adminPhone, availableSeats;
+
         public CardView cardView;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +80,7 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
             adminPhone = itemView.findViewById(R.id.adminPhone);
             availableSeats = itemView.findViewById(R.id.availableSeatsTextView);
             cardView = itemView.findViewById(R.id.mess_list_card_view);
+
         }
     }
 
