@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Add Mess"
+        android:background="@color/primary_color"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="#FFF"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:id="@+id/messNameEditText"
+            android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
+            android:textColorHint="@color/primary_color"
+            android:layout_height="50dp"
+            android:background="@drawable/text_field_border"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingLeft="20dp"
+            android:hint="Mess Name"/>
+
+
+        <EditText
+            android:id="@+id/messAddressEditText"
+            android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:textColorHint="@color/primary_color"
+            android:background="@drawable/text_field_border"
+            android:hint="Mess Address"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/numberOfSeatsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textColorHint="@color/primary_color"
+            android:textColor="@color/primary_color"
+            android:ems="10"
+            android:background="@drawable/text_field_border"
+            android:hint="Number of Seats"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/rentPerSeatEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:background="@drawable/text_field_border"
+            android:textColor="@color/primary_color"
+            android:hint="Rent Per Seat"
+            android:textColorHint="@color/primary_color"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:inputType="number" />
+
+
+        <Button
+            style="?android:attr/absListViewStyle"
+            android:id="@+id/messAddButton"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primary_color"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="#FFF"
+            android:text="Add" />
+
+    </LinearLayout>
+
+</LinearLayout>
