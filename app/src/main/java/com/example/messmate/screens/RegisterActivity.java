@@ -75,7 +75,6 @@ DatabaseReference userRef;
     }
 
     private void PerForAuth() {
-        AtomicReference<Boolean> ok = new AtomicReference<>(false);
         String name = inName.getText().toString();
         String phone = inPhone.getText().toString();
         String email=inEmail.getText().toString();
@@ -106,10 +105,10 @@ DatabaseReference userRef;
                         .addOnCompleteListener(task1 -> {
                             if(task1.isSuccessful()) {
                                 Toast.makeText(RegisterActivity.this, "Data saved", Toast.LENGTH_SHORT).show();
-                                ok.set(true);
                             }
                             else {
                                 Toast.makeText(RegisterActivity.this, "Failed to save data", Toast.LENGTH_SHORT).show();
+                                return;
                             }
                         });
 
@@ -124,7 +123,7 @@ DatabaseReference userRef;
             firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                 if(task.isSuccessful() && ok.get() == true){
+                 if(task.isSuccessful()){
                      progressDialog.dismiss();
                      Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.messmate.R;
+import com.example.messmate.models.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Constants.userKey = email.replace(".","");
                         startActivity(intent);
                         Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
                     }else {
