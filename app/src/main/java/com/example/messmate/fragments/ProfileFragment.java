@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class ProfileFragment extends Fragment {
     Button saveButton;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
-    private FirebaseAuth firebaseAuthAuth;
+    private FirebaseAuth firebaseAuth;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -47,29 +48,41 @@ public class ProfileFragment extends Fragment {
         userRef = database.getReference("Users").child(userId);
 
         nameEditText = view.findViewById(R.id.nameEditText);
-        emailEditText = view.findViewById(R.id.emailEditText);
         phoneEditText = view.findViewById(R.id.phoneEditText);
         oldPasswordEditText = view.findViewById(R.id.oldPasswordEditText);
         newPasswordEditText = view.findViewById(R.id.newPasswordEditText);
-        confirmNewPasswordEditText = view.findViewById(R.id.confirmPasswordEditText);
+        confirmNewPasswordEditText = view.findViewById(R.id.NewconfirmPasswordEditText);
         saveButton = view.findViewById(R.id.profileSaveButton);
 
         saveButton.setOnClickListener(view -> {
-            String username = nameEditText.getText().toString().trim();
-            String email = emailEditText.getText().toString().trim();
-            String phone = phoneEditText.getText().toString().trim();
-            String oldPassword = oldPasswordEditText.getText().toString();
-            String newPassword = newPasswordEditText.getText().toString();
-            String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
+            String username = "";
+            String phone = "";
+            String oldPassword = "";
+            String newPassword = "";
+            String confirmNewPassword = "";
 
-            if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(phone) &&
-                    !TextUtils.isEmpty(oldPassword) && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(confirmNewPassword)
+            username = nameEditText.getText().toString().trim();
+
+
+            phone = phoneEditText.getText().toString().trim();
+
+            oldPassword = oldPasswordEditText.getText().toString();
+
+            newPassword = newPasswordEditText.getText().toString();
+
+            confirmNewPassword = confirmNewPasswordEditText.getText().toString();
+
+
+
+            if (!username.isEmpty() && !phone.isEmpty() &&
+                    !oldPassword.isEmpty() && !newPassword.isEmpty() && !confirmNewPassword.isEmpty()
             ) {
-                updateUserDetails(username, email, phone);
-                updatePassword(email, oldPassword, newPassword, confirmNewPassword);
+                updateUserDetails(username, phone);
+                updatePassword( oldPassword, newPassword, confirmNewPassword);
             }
-            else if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(phone)) {
-                updateUserDetails(username, email, phone);
+            else if (!username.isEmpty() && !phone.isEmpty() &&
+                    oldPassword.isEmpty() && newPassword.isEmpty() && confirmNewPassword.isEmpty()) {
+                updateUserDetails(username, phone);
             }
             else {
                 Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -81,16 +94,16 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void updatePassword(String email, String oldPassword, String newPassword, String confirmNewPassword) {
+    private void updatePassword( String oldPassword, String newPassword, String confirmNewPassword) {
 
         if (newPassword.length()<8) {
             newPasswordEditText.setError("Enter 8 Characters");
         } else if (!newPassword.equals(confirmNewPassword)) {
             confirmNewPasswordEditText.setError("Password is not matching");
         } else {
-            FirebaseUser user = firebaseAuthAuth.getCurrentUser();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+                AuthCredential credential = EmailAuthProvider.getCredential(Constants.userEmail, oldPassword);
                 user.reauthenticate(credential).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         changePassword(newPassword);
@@ -106,7 +119,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void changePassword(String newPassword) {
-        FirebaseUser user = firebaseAuthAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             user.updatePassword(newPassword).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -120,11 +133,11 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void updateUserDetails(String username, String email, String phone) {
+    private void updateUserDetails(String username, String phone) {
 
         Map<String, Object> userUpdates = new HashMap<>();
         userUpdates.put("username", username);
-        userUpdates.put("email", email);
+        userUpdates.put("email", Constants.userKey);
         userUpdates.put("phone", phone);
 
         userRef.updateChildren(userUpdates).addOnCompleteListener(task -> {

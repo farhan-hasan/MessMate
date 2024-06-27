@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         Constants.userKey = email.replace(".","");
+                        Constants.userEmail = email;
                         startActivity(intent);
                         Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
                     }else {
