@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302600867872",
+    "project_id": "messmate-532d3",
+    "storage_bucket": "messmate-532d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302600867872:android:92bbb48ca4af885e2c2c45",
+        "android_client_info": {
+          "package_name": "com.example.messmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9gx65uqJDEXplSM4eMzrKvqApx7JB55s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

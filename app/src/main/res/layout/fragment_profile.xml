@@ -24,6 +24,7 @@
             android:layout_marginTop="20dp"
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
             android:textColorHint="@color/primary_color"
             android:layout_height="50dp"
             android:background="@drawable/text_field_border"
@@ -37,6 +38,7 @@
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
             android:layout_height="50dp"
             android:ems="10"
             android:textColorHint="@color/primary_color"
@@ -51,6 +53,7 @@
         <EditText
             android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
             android:layout_height="50dp"
             android:ems="10"
             android:textColorHint="@color/primary_color"
@@ -67,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textColorHint="@color/primary_color"
+            android:textColor="@color/primary_color"
             android:ems="10"
             android:background="@drawable/text_field_border"
             android:hint="Old Password"
@@ -82,13 +86,14 @@
             android:layout_height="50dp"
             android:ems="10"
             android:background="@drawable/text_field_border"
+            android:textColor="@color/primary_color"
             android:hint="New Password"
             android:textColorHint="@color/primary_color"
             android:drawableLeft="@drawable/passwordsvg"
             android:padding="10dp"
             android:drawablePadding="10dp"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword" />
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/NewconfirmPasswordEditText"
@@ -96,13 +101,14 @@
             android:layout_height="50dp"
             android:textColorHint="@color/primary_color"
             android:ems="10"
+            android:textColor="@color/primary_color"
             android:background="@drawable/text_field_border"
             android:hint="Confirm New Password"
             android:drawableLeft="@drawable/passwordsvg"
             android:padding="10dp"
             android:drawablePadding="10dp"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword" />
+            android:inputType="text" />
 
         <Button
             style="?android:attr/absListViewStyle"

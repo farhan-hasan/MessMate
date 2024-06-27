@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -41,7 +42,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
-    implementation("androidx.activity:activity:1.8.0")// or latest version
+    implementation("androidx.activity:activity:1.8.0")
+    implementation("com.google.firebase:firebase-auth:23.0.0")// or latest version
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

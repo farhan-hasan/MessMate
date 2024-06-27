@@ -17,7 +17,7 @@ tools:context=".screens.MealRequestActivity">
     android:theme="@style/CustomToolbarTheme"
     app:title="MessMate"
     app:titleTextAppearance="@style/CustomToolbarTitle"
-    app:titleTextColor="@color/bg_color" />
+    app:titleTextColor="#FFF" />
 
     <LinearLayout
         android:layout_width="match_parent"
