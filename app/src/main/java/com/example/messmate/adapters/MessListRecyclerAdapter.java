@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,24 +11,25 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
-import com.example.messmate.models.MessListCardModel;
-import com.example.messmate.models.ResidentDetailsModel;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
+import com.example.messmate.models.MessDetailsModel;
+import com.example.messmate.models.MessDetailsModel;
+import com.firebase.ui.database.*;
 
 import java.util.ArrayList;
 
-public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecyclerAdapter.ViewHolder> {
+public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetailsModel, MessListRecyclerAdapter.ViewHolder> {
     Context context;
-    private OnItemClickListener listener;
+    private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(MessListCardModel item);
+        void onItemClick(MessDetailsModel item);
     }
-    ArrayList<MessListCardModel> messList;
-    public MessListRecyclerAdapter(Context context, ArrayList<MessListCardModel> messList, OnItemClickListener listener) {
+
+    public MessListRecyclerAdapter(Context context,
+                                   OnItemClickListener listener,
+                                   @NonNull FirebaseRecyclerOptions<MessDetailsModel> options) {
+        super(options);
         this.context = context;
-        this.messList = messList;
         this.listener = listener;
     }
 
@@ -39,40 +38,49 @@ public class MessListRecyclerAdapter extends RecyclerView.Adapter<MessListRecycl
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.mess_list_card, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.mess_list_card, parent, false);
         return new ViewHolder(view);
     }
 
+//    @Override
+//    public void onBindViewHolder(@NonNull ViewHolder holder, int position,MessListCardModel model ) {
+//        MessListCardModel item = messList.get(position);
+//        holder.messName.setText(item.messName);
+//        holder.messAddress.setText(item.messAddress);
+//        holder.adminPhone.setText(item.adminPhone);
+//        holder.availableSeats.setText(item.availableSeats);
+//
+//        holder.itemView.setPadding(0, 0, 0, 0);
+//
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                listener.onItemClick(item);
+//            }
+//        });
+//    }
+
+
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        MessListCardModel item = messList.get(position);
-        holder.messName.setText(item.messName);
-        holder.messAddress.setText(item.messAddress);
-        holder.adminPhone.setText(item.adminPhone);
-        holder.availableSeats.setText(item.availableSeats);
-
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull MessDetailsModel model) {
+        holder.messName.setText(model.mess_name);
+        holder.messAddress.setText(model.mess_address);
+        holder.adminPhone.setText(model.admin_phone);
+        holder.availableSeats.setText(String.valueOf(model.available_seats));
         holder.itemView.setPadding(0, 0, 0, 0);
-
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(item);
+                listener.onItemClick(model);
             }
         });
-
-
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return messList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView messName, messAddress, adminPhone, availableSeats;
 
         public CardView cardView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             messName = itemView.findViewById(R.id.messNameTextView);

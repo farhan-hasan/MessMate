@@ -13,7 +13,12 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
+import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.models.MessListCardModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
@@ -40,24 +45,46 @@ public class SearchFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.searchMessListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 4", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 5", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 6", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 7", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 8", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 9", "Sylhet", "+8801723232323"));
-        messListCardItems.add(new MessListCardModel("10", "My mess 10", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 4", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 5", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 6", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 7", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 8", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 9", "Sylhet", "+8801723232323"));
+//        messListCardItems.add(new MessListCardModel("10", "My mess 10", "Sylhet", "+8801723232323"));
 
-        messListRecyclerAdapter = new MessListRecyclerAdapter(getActivity(), messListCardItems, new MessListRecyclerAdapter.OnItemClickListener() {
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference().child("Messes");
+        Query query = messesRef.orderByChild("available_seats").startAt(1);
+
+        FirebaseRecyclerOptions<MessDetailsModel> options =
+                new FirebaseRecyclerOptions.Builder<MessDetailsModel>()
+                        .setQuery(query, MessDetailsModel.class).build();
+
+        messListRecyclerAdapter = new MessListRecyclerAdapter(getActivity(), new MessListRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(MessListCardModel item) {
-                String message = "Clicked " + item.messName + " ";
+            public void onItemClick(MessDetailsModel item) {
+                String message = "Clicked " + item.mess_name + " ";
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
-        });
+        }, options);
         recyclerView.setAdapter(messListRecyclerAdapter);
+    }
+
+    public void onStart() {
+        super.onStart();
+        if (messListRecyclerAdapter != null) {
+            messListRecyclerAdapter.startListening();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (messListRecyclerAdapter != null) {
+            messListRecyclerAdapter.stopListening();
+        }
     }
 }
