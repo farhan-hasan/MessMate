@@ -95,6 +95,8 @@ public class RentFragment extends Fragment {
                 Map<String,Object> lunchDetails = new HashMap<>();
                 Map<String,Object> dinnerDetails = new HashMap<>();
                 Map<String,Object> mealRequest = new HashMap<>();
+                Map<String,Object> residents = new HashMap<>();
+                Map<String,Object> dummy_user = new HashMap<>();
                 if (messNameEditText.getText()!=null && messAddressEditText.getText()!=null &&
                         numberOfSeatsEditText.getText()!=null && rentPerSeatEditText.getText()!=null) {
 
@@ -104,7 +106,8 @@ public class RentFragment extends Fragment {
                     int rentPerSeat = Integer.parseInt(rentPerSeatEditText.getText().toString().trim());
                     final String[] adminPhone = new String[1];
 
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(Constants.userKey).child("phone");
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").
+                            child(Constants.userKey).child("phone");
 
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -144,6 +147,12 @@ public class RentFragment extends Fragment {
                     messDetails.put("dinner", dinnerDetails);
                     messDetails.put("meal_request", mealRequest);
                     messDetails.put("residents", "");
+
+                    dummy_user.put("breakfast", false);
+                    dummy_user.put("lunch", false);
+                    dummy_user.put("dinner", false);
+                    residents.put("dummy@dummycom", dummy_user);
+                    messDetails.put("residents",residents);
 
                     String messKey = messName.toLowerCase() + "_" + messAddress.toLowerCase();
 
