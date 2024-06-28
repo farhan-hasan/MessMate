@@ -1,6 +1,7 @@
 package com.example.messmate.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,29 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
-import com.example.messmate.models.ResidentDetailsModel;
+import com.example.messmate.models.MessDetailsModel;
+import com.example.messmate.models.UserDetailsModel;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentListRecyclerAdapter.ViewHolder> {
     Context context;
+    List<UserDetailsModel> residentList;
+    private final ResidentListRecyclerAdapter.OnItemClickListener listener;
 
-    ArrayList<ResidentDetailsModel> residentList;
-    public ResidentListRecyclerAdapter(Context context, ArrayList<ResidentDetailsModel> residentList) {
+    public interface OnItemClickListener {
+        void onPaidButtonClick(UserDetailsModel item);
+        void onRemoveButtonClick(UserDetailsModel item);
+    }
+
+    public ResidentListRecyclerAdapter(Context context,
+                                       ResidentListRecyclerAdapter.OnItemClickListener listener,
+                                       List<UserDetailsModel> residentList) {
         this.context = context;
+        this.listener = listener;
         this.residentList = residentList;
     }
 
@@ -35,11 +49,10 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ResidentDetailsModel item = residentList.get(position);
-        holder.residentName.setText(item.name);
-        holder.residentEmail.setText(item.email);
-        holder.residentPhone.setText(item.phone);
-
+        UserDetailsModel resident = residentList.get(position);
+        holder.residentName.setText(resident.username);
+        holder.residentEmail.setText("Email: " + resident.email);
+        holder.residentPhone.setText("Phone: " + resident.phone);
         holder.itemView.setPadding(0, 0, 0, 0);
     }
 
@@ -47,6 +60,11 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
     public int getItemCount() {
         return residentList.size();
     }
+    public void updateList(UserDetailsModel newUser) {
+        residentList.add(newUser);
+        notifyDataSetChanged();
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView residentName, residentEmail, residentPhone;
@@ -59,5 +77,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
             cardView = itemView.findViewById(R.id.resident_card_view);
         }
     }
+
 
 }

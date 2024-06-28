@@ -22,6 +22,8 @@ public class MessDetailsModel {
     //public MealRequest meal_request;
     Map<String,Object> meal_request = new HashMap<>();
     public Map<String, Object> residents;
+    public Map<String, Object> dummy_user;
+
 
     // Required default constructor for Firebase object mapping
     public MessDetailsModel() {
@@ -36,43 +38,4 @@ public class MessDetailsModel {
         meal_request.put("dinner", 0);
     }
 
-    // Getters and setters for all fields
-    // ...
-
-    // Inner classes for Meal, MealRequest, and Resident
-//    public static class Meal {
-//        public String menu;
-//        public int price;
-//
-//        public Meal() {
-//        }
-//
-//        // Getters and setters
-//        // ...
-//    }
-//
-//    public static class MealRequest {
-//        public boolean breakfast;
-//        public boolean lunch;
-//        public boolean dinner;
-//
-//        public MealRequest() {
-//        }
-//
-//        // Getters and setters
-//        // ...
-//    }
-//
-//    public static class Resident {
-//        public boolean breakfast;
-//        public boolean lunch;
-//        public boolean dinner;
-//        public boolean rent;
-//
-//        public Resident() {
-//        }
-//
-//        // Getters and setters
-//        // ...
-//    }
 }

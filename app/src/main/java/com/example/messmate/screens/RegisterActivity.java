@@ -94,14 +94,17 @@ DatabaseReference userRef;
             {
                 database = FirebaseDatabase.getInstance();
                 userRef = database.getReference();
-
+                String key = email.replace(".","");
                 Map<String, Object> userData = new HashMap<>();
                 userData.put("username", name);
                 userData.put("email", email);
                 userData.put("phone", phone);
+                userData.put("key", key);
+                userData.put("mess_name", key);
+                userData.put("is_resident", false);
 
 
-                userRef.child("users").child(email.replace(".","")).setValue(userData)
+                userRef.child("users").child(key).setValue(userData)
                         .addOnCompleteListener(task1 -> {
                             if(task1.isSuccessful()) {
                                 Toast.makeText(RegisterActivity.this, "Data saved", Toast.LENGTH_SHORT).show();
