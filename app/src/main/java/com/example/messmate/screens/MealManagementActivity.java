@@ -3,15 +3,10 @@ package com.example.messmate.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +14,6 @@ import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
 import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessDetailsModel;
-import com.example.messmate.models.MessListCardModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,7 +24,6 @@ import java.util.ArrayList;
 public class MealManagementActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MessListRecyclerAdapter messListRecyclerAdapter;
-    ArrayList<MessListCardModel> messListCardItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,15 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
 import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessDetailsModel;
-import com.example.messmate.models.MessListCardModel;
-import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.RentMessDetailsActivity;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,13 +35,11 @@ import com.orhanobut.dialogplus.DialogPlus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class RentFragment extends Fragment {
     private RecyclerView recyclerView;
     private MessListRecyclerAdapter messListRecyclerAdapter;
     private Button addButton;
-    ArrayList<MessListCardModel> messListCardItems = new ArrayList<>();
     View view;
     public RentFragment() {
         // Required empty public constructor
@@ -106,7 +101,7 @@ public class RentFragment extends Fragment {
                     int rentPerSeat = Integer.parseInt(rentPerSeatEditText.getText().toString().trim());
                     final String[] adminPhone = new String[1];
 
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").
                             child(Constants.userKey).child("phone");
 
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,11 +141,11 @@ public class RentFragment extends Fragment {
                     messDetails.put("lunch", lunchDetails);
                     messDetails.put("dinner", dinnerDetails);
                     messDetails.put("meal_request", mealRequest);
-                    messDetails.put("residents", "");
 
                     dummy_user.put("breakfast", false);
                     dummy_user.put("lunch", false);
                     dummy_user.put("dinner", false);
+                    dummy_user.put("rent", false);
                     residents.put("dummy@dummycom", dummy_user);
                     messDetails.put("residents",residents);
 
@@ -182,16 +177,6 @@ public class RentFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.rentMessListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 4", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 5", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 6", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 7", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 8", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 9", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 10", "Sylhet", "+8801723232323"));
 
         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference().child("Messes");
         Query query = messesRef.orderByChild("admin").equalTo(Constants.userKey);
@@ -203,8 +188,11 @@ public class RentFragment extends Fragment {
 
             @Override
             public void onItemClick(MessDetailsModel item) {
-                String message = "Clicked " + item.mess_name + " ";
-                startActivity(new Intent(getActivity(), RentMessDetailsActivity.class));
+                String key = item.mess_name.toLowerCase() + "_" + item.mess_address.toLowerCase();
+                String message = "Key " + key.replace(" ","");
+                Intent intent = new Intent(getActivity(), RentMessDetailsActivity.class);
+                intent.putExtra("messKey", key.replace(" ",""));
+                startActivity(intent);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
         }, options);

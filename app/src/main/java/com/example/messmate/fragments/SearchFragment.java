@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
 import com.example.messmate.models.MessDetailsModel;
-import com.example.messmate.models.MessListCardModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
     private MessListRecyclerAdapter messListRecyclerAdapter;
-    ArrayList<MessListCardModel> messListCardItems = new ArrayList<>();
     View view;
     public SearchFragment() {
         // Required empty public constructor

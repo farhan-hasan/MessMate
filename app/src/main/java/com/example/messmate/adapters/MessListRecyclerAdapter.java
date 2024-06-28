@@ -42,31 +42,14 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
         return new ViewHolder(view);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolder holder, int position,MessListCardModel model ) {
-//        MessListCardModel item = messList.get(position);
-//        holder.messName.setText(item.messName);
-//        holder.messAddress.setText(item.messAddress);
-//        holder.adminPhone.setText(item.adminPhone);
-//        holder.availableSeats.setText(item.availableSeats);
-//
-//        holder.itemView.setPadding(0, 0, 0, 0);
-//
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                listener.onItemClick(item);
-//            }
-//        });
-//    }
 
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull MessDetailsModel model) {
         holder.messName.setText(model.mess_name);
-        holder.messAddress.setText(model.mess_address);
-        holder.adminPhone.setText(model.admin_phone);
-        holder.availableSeats.setText(String.valueOf(model.available_seats));
+        holder.messAddress.setText("Address: " + model.mess_address);
+        holder.adminPhone.setText("Admin Phone: " + model.admin_phone);
+        holder.availableSeats.setText("Avalailabel Seats: " + String.valueOf(model.available_seats));
         holder.itemView.setPadding(0, 0, 0, 0);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,5 +74,4 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
 
         }
     }
-
 }

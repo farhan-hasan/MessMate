@@ -1,5 +1,6 @@
 package com.example.messmate.screens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,19 +8,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.ResidentListRecyclerAdapter;
-import com.example.messmate.models.ResidentDetailsModel;
+import com.example.messmate.models.Constants;
+import com.example.messmate.models.MessDetailsModel;
+import com.example.messmate.models.UserDetailsModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RentMessDetailsActivity extends AppCompatActivity {
-
-    private ResidentListRecyclerAdapter residentListRecyclerAdapter;
-    ArrayList<ResidentDetailsModel> residentList = new ArrayList<>();
+    List<UserDetailsModel> residentList = new ArrayList<>();
+    ResidentListRecyclerAdapter residentListRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +64,80 @@ public class RentMessDetailsActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rentResidentListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(RentMessDetailsActivity.this));
-        residentList.add(new ResidentDetailsModel("Person 1", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 2", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 3", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 4", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 5", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 6", "abc@gmail.com", "+8801723232323"));
-        residentList.add(new ResidentDetailsModel("Person 7", "abc@gmail.com", "+8801723232323"));
 
-        residentListRecyclerAdapter = new ResidentListRecyclerAdapter(RentMessDetailsActivity.this, residentList);
+        String messKey = getIntent().getStringExtra("messKey");
+        assert messKey != null;
+
+        //residentList.add(new UserDetailsModel("dummy", "dummy", "dummy","dummy","dummy",false));
+
+
+        residentListRecyclerAdapter = new ResidentListRecyclerAdapter(RentMessDetailsActivity.this, new ResidentListRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onPaidButtonClick(UserDetailsModel item) {
+
+            }
+
+            @Override
+            public void onRemoveButtonClick(UserDetailsModel item) {
+
+            }
+        }, residentList);
         recyclerView.setAdapter(residentListRecyclerAdapter);
+
+        fetchResidentKeys(messKey);
+
     }
+
+    public void fetchResidentKeys(String messKey) {
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                .child("Messes")
+                .child(messKey)
+                .child("residents");
+
+        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> residentKeys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    residentKeys.add(snapshot.getKey());
+                }
+                Log.d("log", "residentKeys:");
+                for (String key : residentKeys) {
+                    System.out.println(key);
+                }
+
+                fetchUserDetails(residentKeys);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void fetchUserDetails(List<String> residentKeys) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        for (String key : residentKeys) {
+            usersRef.orderByChild("key").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserDetailsModel user = snapshot.getValue(UserDetailsModel.class);
+                        if (user != null) {
+                            residentListRecyclerAdapter.updateList(user);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+
 }
+
