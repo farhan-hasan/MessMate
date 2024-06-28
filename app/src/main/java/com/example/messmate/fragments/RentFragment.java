@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
+import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessListCardModel;
 import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.RentMessDetailsActivity;
@@ -91,6 +92,7 @@ public class RentFragment extends Fragment {
                             messDetails.put("mess_address", messAddress);
                             messDetails.put("number_of_seats", numberOfSeats);
                             messDetails.put("rent_per_seat", rentPerSeat);
+                            messDetails.put("admin", Constants.userKey);
 
                             breakFastDetails.put("menu", "");
                             breakFastDetails.put("price", 0);
