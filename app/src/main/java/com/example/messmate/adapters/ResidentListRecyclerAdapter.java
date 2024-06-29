@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +16,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.models.UserDetailsModel;
 import com.example.messmate.screens.RegisterActivity;
+import com.example.messmate.screens.RentMessDetailsActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -55,9 +64,52 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
         return new ViewHolder(view);
     }
 
+    public int getListSize() {
+        return residentList.size();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,final int position) {
         UserDetailsModel resident = residentList.get(position);
+        final Boolean[] isPaid = {false};
+
+
+        // Initial paid button state
+        {
+            DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Messes")
+                    .child(resident.getMess_name())
+                    .child("residents")
+                    .child(resident.getKey());
+            messesRef.child("rent").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        isPaid[0] = dataSnapshot.getValue(Boolean.class);
+                        Log.d("IS_PAID", "paid: " + isPaid[0]);
+                        if(isPaid[0]) {
+                            holder.paidButton.setText("Paid");
+                            holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green)));
+                        }
+                        else {
+                            holder.paidButton.setText("Unpaid");
+                            holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red)));
+                        }
+                    } else {
+                        Log.d("FETCH_RENT", "Rent per seat does not exist");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("FETCH_RENT", "DatabaseError: " + databaseError.getMessage());
+                }
+            });
+        }
+
+
+
+
         holder.residentName.setText(resident.getUsername());
         holder.residentEmail.setText("Email: " + resident.getEmail());
         holder.residentPhone.setText("Phone: " + resident.getPhone());
@@ -90,10 +142,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                                 if(task.isSuccessful()) {
                                     Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
                                     if (context instanceof Activity) {
-                                        Activity activity = (Activity) context;
-                                        Intent intent = activity.getIntent();
-                                        activity.finish();
-                                        activity.startActivity(intent);
+                                        resetActivity();
                                     }
                                 }
                                 else {
@@ -113,6 +162,21 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                 builder.show();
             }
         });
+
+        holder.paidButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    public void resetActivity() {
+        Activity activity = (Activity) context;
+        Intent intent = activity.getIntent();
+        activity.finish();
+        activity.startActivity(intent);
     }
 
     @Override

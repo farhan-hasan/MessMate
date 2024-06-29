@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,9 +38,9 @@ import java.util.Map;
 public class RentMessDetailsActivity extends AppCompatActivity {
     List<UserDetailsModel> residentList = new ArrayList<>();
     ResidentListRecyclerAdapter residentListRecyclerAdapter;
-    Button residentAddButton;
+    Button residentAddButton, closeButton;
     String messKey, messName;
-    TextView messNameTextView;
+    TextView messNameTextView, totalRentAmountTextView, collectedAmountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +54,15 @@ public class RentMessDetailsActivity extends AppCompatActivity {
 
         messNameTextView = findViewById(R.id.rentDetailsMessName);
         messNameTextView.setText(messName);
-
+        totalRentAmountTextView = findViewById(R.id.totalRentAmountTextView);
+        collectedAmountTextView = findViewById(R.id.collectedAmountTextView);
+        closeButton = findViewById(R.id.closeButton);
         // Enable the back button
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
+        setTotalRentAmount();
         loadFragment();
 
         residentAddButton = findViewById(R.id.residentAddButton);
@@ -69,8 +73,57 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             }
         });
 
-    }
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeCollection();
+            }
+        });
 
+    }
+    public void resetActivity() {
+        Activity activity = (Activity) RentMessDetailsActivity.this;
+        Intent intent = activity.getIntent();
+        activity.finish();
+        activity.startActivity(intent);
+    }
+    public void closeCollection() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RentMessDetailsActivity.this);
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Do you want to close collection for this month?");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Messes")
+                    .child(messKey)
+                    .child("residents");
+            messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    int paidCounter = 0;
+                    System.out.println(dataSnapshot.hasChildren());
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        snapshot.getRef().child("rent").setValue(false);
+                    }
+                    resetActivity();
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(RentMessDetailsActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
+    }
     public void addResident() {
         final DialogPlus dialogPlus = DialogPlus.newDialog(RentMessDetailsActivity.this)
                 .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.add_resident_popup))
@@ -130,6 +183,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                                 residentList.clear();
                                                 fetchResidentKeys(messKey);
                                                 dialogPlus.dismiss();
+                                                resetActivity();
                                             }
                                             else {
                                                 Toast.makeText(RentMessDetailsActivity.this, "Failed to add resident", Toast.LENGTH_SHORT).show();
@@ -174,7 +228,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         });
 
     }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(RentMessDetailsActivity.this, HomeActivity.class);
@@ -184,7 +237,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void loadFragment() {
 
         RecyclerView recyclerView = findViewById(R.id.rentResidentListRecyclerView);
@@ -194,8 +246,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
 
         String messKey = getIntent().getStringExtra("messKey");
         assert messKey != null;
-
-        //residentList.add(new UserDetailsModel("dummy", "dummy", "dummy","dummy","dummy",false));
 
 
         residentListRecyclerAdapter = new ResidentListRecyclerAdapter(RentMessDetailsActivity.this, new ResidentListRecyclerAdapter.OnItemClickListener() {
@@ -210,11 +260,95 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             }
         }, residentList);
         recyclerView.setAdapter(residentListRecyclerAdapter);
-
+        setTotalRentAmount();
         fetchResidentKeys(messKey);
 
     }
+    public void setTotalRentAmount() {
 
+        final int[] totalResident = new int[1];
+        final Integer[] rentPerSeat = {0};
+
+        // Total residents query
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                .child("Messes")
+                .child(messKey)
+                .child("residents");
+
+        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> residentKeys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if(!snapshot.getKey().equals("dummy@dummycom")) {
+                        residentKeys.add(snapshot.getKey());
+                    }
+                }
+                totalResident[0] = residentKeys.size();
+                Log.d("TOTAL_RESIDENTS", "TOTAL_RESIDENTS" + totalResident[0]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Initial Total Rent amount query
+        messesRef = FirebaseDatabase.getInstance().getReference().child("Messes").child(messKey);
+        messesRef.child("rent_per_seat").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    rentPerSeat[0] = dataSnapshot.getValue(Integer.class);
+                    Log.d("FETCH_RENT", "Rent per seat: " + rentPerSeat[0]);
+                    String amount = String.valueOf(rentPerSeat[0] * totalResident[0]);
+                    totalRentAmountTextView.setText(amount + " BDT");
+
+                    // Initial Paid Amount state query
+                    {
+
+                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Messes")
+                                .child(messKey)
+                                .child("residents");
+                        System.out.println(messName);
+                        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int paidCounter = 0;
+                                System.out.println(dataSnapshot.hasChildren());
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Boolean rent = snapshot.child("rent").getValue(Boolean.class);
+                                    if (rent != null && rent) {
+                                        paidCounter++;
+                                    }
+                                }
+                                collectedAmountTextView.setText(String.valueOf((paidCounter*rentPerSeat[0])) + " BDT");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                } else {
+                    Log.d("FETCH_RENT", "Rent per seat does not exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FETCH_RENT", "DatabaseError: " + databaseError.getMessage());
+            }
+        });
+
+
+
+
+    }
     public void fetchResidentKeys(String messKey) {
         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                 .child("Messes")
@@ -230,11 +364,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                         residentKeys.add(snapshot.getKey());
                     }
                 }
-                Log.d("log", "residentKeys:");
-                for (String key : residentKeys) {
-                    System.out.println(key);
-                }
-
                 fetchUserDetails(residentKeys);
             }
 
@@ -244,7 +373,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
     public void fetchUserDetails(List<String> residentKeys) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
