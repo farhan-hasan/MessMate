@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
+import com.example.messmate.adapters.WrapContentLinearLayoutManager;
 import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.screens.RentMessDetailsActivity;
@@ -176,7 +177,10 @@ public class RentFragment extends Fragment {
     public void loadFragment() {
 
         recyclerView = view.findViewById(R.id.rentMessListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // Added wrapper for back button issue
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference().child("Messes");
         Query query = messesRef.orderByChild("admin").equalTo(Constants.userKey);

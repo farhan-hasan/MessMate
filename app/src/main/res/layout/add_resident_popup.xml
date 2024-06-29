@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Add Resident"
+        android:background="@color/primary_color"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="#FFF"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:id="@+id/addResidentEmailEditText"
+            android:layout_width="match_parent"
+            android:textColor="@color/primary_color"
+            android:textColorHint="@color/primary_color"
+            android:layout_height="50dp"
+            android:background="@drawable/text_field_border"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingLeft="20dp"
+            android:hint="Resident Email"/>
+
+
+        <Button
+            style="?android:attr/absListViewStyle"
+            android:id="@+id/residentAddButton"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primary_color"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="#FFF"
+            android:text="Add" />
+
+    </LinearLayout>
+
+</LinearLayout>
