@@ -105,7 +105,19 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:textColor="#FFF"
-            android:text="Save" />
+            android:text="Update Profile" />
+
+        <Button
+            style="?android:attr/absListViewStyle"
+            android:id="@+id/profileUpdatePassButton"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primary_color"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="#FFF"
+            android:text="Update Password" />
+
 
 
 

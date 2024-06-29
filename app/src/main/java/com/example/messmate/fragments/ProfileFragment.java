@@ -29,7 +29,7 @@ public class ProfileFragment extends Fragment {
     View view;
     EditText nameEditText, emailEditText, phoneEditText, oldPasswordEditText, newPasswordEditText,
     confirmNewPasswordEditText;
-    Button saveButton;
+    Button saveButton, updatePassButton;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
     private FirebaseAuth firebaseAuth;
@@ -53,35 +53,43 @@ public class ProfileFragment extends Fragment {
         newPasswordEditText = view.findViewById(R.id.newPasswordEditText);
         confirmNewPasswordEditText = view.findViewById(R.id.NewconfirmPasswordEditText);
         saveButton = view.findViewById(R.id.profileSaveButton);
+        updatePassButton = view.findViewById(R.id.profileUpdatePassButton);
+
+        updatePassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String oldPassword = "";
+                String newPassword = "";
+                String confirmNewPassword = "";
+                oldPassword = oldPasswordEditText.getText().toString();
+
+                newPassword = newPasswordEditText.getText().toString();
+
+                confirmNewPassword = confirmNewPasswordEditText.getText().toString();
+                if (!oldPassword.isEmpty() && !newPassword.isEmpty() && !confirmNewPassword.isEmpty()) {
+                    Log.d("log", "first if");
+                    updatePassword(oldPassword, newPassword, confirmNewPassword);
+                }
+                else {
+                    Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
         saveButton.setOnClickListener(view -> {
             String username = "";
             String phone = "";
-            String oldPassword = "";
-            String newPassword = "";
-            String confirmNewPassword = "";
+
 
             username = nameEditText.getText().toString().trim();
 
-
             phone = phoneEditText.getText().toString().trim();
 
-            oldPassword = oldPasswordEditText.getText().toString();
 
-            newPassword = newPasswordEditText.getText().toString();
-
-            confirmNewPassword = confirmNewPasswordEditText.getText().toString();
-
-
-
-            if (!username.isEmpty() && !phone.isEmpty() &&
-                    !oldPassword.isEmpty() && !newPassword.isEmpty() && !confirmNewPassword.isEmpty()
-            ) {
-                updateUserDetails(username, phone);
-                updatePassword( oldPassword, newPassword, confirmNewPassword);
-            }
-            else if (!username.isEmpty() && !phone.isEmpty() &&
-                    oldPassword.isEmpty() && newPassword.isEmpty() && confirmNewPassword.isEmpty()) {
+            if (!username.isEmpty() && !phone.isEmpty()) {
+                Log.d("log", "second if");
                 updateUserDetails(username, phone);
             }
             else {
@@ -108,10 +116,12 @@ public class ProfileFragment extends Fragment {
                     if (task.isSuccessful()) {
                         changePassword(newPassword);
                     } else {
-                        Toast.makeText(getActivity(), "Re-authentication failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("REAUTHENTICATE", "Re-authentication failed: ");
+                        Toast.makeText(requireContext(), "Re-authentication failed: ", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
+                Log.d("REAUTHENTICATE", "No authenticated user found.");
                 Toast.makeText(getActivity(), "No authenticated user found.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -123,12 +133,15 @@ public class ProfileFragment extends Fragment {
         if (user != null) {
             user.updatePassword(newPassword).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    Log.d("REAUTHENTICATE", "Password updated successfully.");
                     Toast.makeText(getActivity(), "Password updated successfully.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Failed to update password: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("REAUTHENTICATE", "Failed to update password: ");
+                    Toast.makeText(getActivity(), "Failed to update password: ", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
+            Log.d("REAUTHENTICATE", "No authenticated user found.");
             Toast.makeText(getActivity(), "No authenticated user found.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -142,9 +155,11 @@ public class ProfileFragment extends Fragment {
 
         userRef.updateChildren(userUpdates).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getActivity(), "User details updated successfully.", Toast.LENGTH_SHORT).show();
+                Log.d("REAUTHENTICATE", "User details updated successfully.");
+                Toast.makeText(requireContext(), "User details updated successfully.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getActivity(), "Failed to update user details: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("REAUTHENTICATE", "Failed to update user details: ");
+                Toast.makeText(getActivity(), "Failed to update user details: ", Toast.LENGTH_SHORT).show();
             }
         });
 

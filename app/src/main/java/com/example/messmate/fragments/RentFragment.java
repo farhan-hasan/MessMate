@@ -198,7 +198,6 @@ public class RentFragment extends Fragment {
                 intent.putExtra("messKey", key.replace(" ",""));
                 intent.putExtra("messName", item.mess_name);
                 startActivity(intent);
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
         }, options);
         recyclerView.setAdapter(messListRecyclerAdapter);

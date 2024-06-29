@@ -81,34 +81,59 @@
 
 
                 <TextView
-                    android:id="@+id/totalCollectionTextView"
+                    android:id="@+id/totalRentTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Collection"
+                    android:text="Total Rent: "
                     android:textColor="@color/primary_color"
                     android:fontFamily="@font/roboto_bold"
-                    android:textSize="24sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="4dp" />
 
                 <TextView
-                    android:id="@+id/collectedAmoundTextView"
+                    android:id="@+id/totalRentAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/totalRentTextView"
+                    android:text=""
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/collectedTextField"
                     android:paddingTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12000/20000 BDT"
-                    android:layout_below="@+id/totalCollectionTextView"
+                    android:text="Collected Amount: "
+                    android:layout_below="@+id/totalRentTextView"
                     android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textSize="16dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/collectedAmountTextView"
+                    android:paddingTop="3dp"
+                    android:layout_toEndOf="@+id/collectedTextField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/totalRentTextView"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="16sp"
                     />
 
 
                 <Button
-                    android:id="@+id/collectionButton"
+                    android:id="@+id/closeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Collect"
+                    android:text="Close"
                     android:backgroundTint="@color/primary_color"
                     android:textColor="#FFF"
                     android:fontFamily="@font/roboto_regular"
