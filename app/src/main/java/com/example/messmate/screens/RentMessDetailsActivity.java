@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messmate.R;
@@ -35,16 +37,21 @@ public class RentMessDetailsActivity extends AppCompatActivity {
     List<UserDetailsModel> residentList = new ArrayList<>();
     ResidentListRecyclerAdapter residentListRecyclerAdapter;
     Button residentAddButton;
-    String messKey;
+    String messKey, messName;
+    TextView messNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rent_mess_details);
+        messKey = getIntent().getStringExtra("messKey");
+        messName = getIntent().getStringExtra("messName");
 
         Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
         setSupportActionBar(toolbar);
-         messKey = getIntent().getStringExtra("messKey");
+
+        messNameTextView = findViewById(R.id.rentDetailsMessName);
+        messNameTextView.setText(messName);
 
         // Enable the back button
         if (getSupportActionBar() != null) {
@@ -128,6 +135,16 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                                 Toast.makeText(RentMessDetailsActivity.this, "Failed to add resident", Toast.LENGTH_SHORT).show();
                                             }
                                         });
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(key)
+                                                .child("mess_name").setValue(messKey).addOnCompleteListener(task -> {
+                                                    if(task.isSuccessful()) {
+                                                        Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    else {
+                                                        Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
 
 
 
@@ -209,7 +226,9 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> residentKeys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    residentKeys.add(snapshot.getKey());
+                    if(!snapshot.getKey().equals("dummy@dummycom")) {
+                        residentKeys.add(snapshot.getKey());
+                    }
                 }
                 Log.d("log", "residentKeys:");
                 for (String key : residentKeys) {
