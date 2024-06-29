@@ -196,6 +196,7 @@ public class RentFragment extends Fragment {
                 String message = "Key " + key.replace(" ","");
                 Intent intent = new Intent(getActivity(), RentMessDetailsActivity.class);
                 intent.putExtra("messKey", key.replace(" ",""));
+                intent.putExtra("messName", item.mess_name);
                 startActivity(intent);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }

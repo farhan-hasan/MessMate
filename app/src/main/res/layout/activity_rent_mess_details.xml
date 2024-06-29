@@ -19,20 +19,22 @@
         app:titleTextAppearance="@style/CustomToolbarTitle"
         app:titleTextColor="#FFF" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="670dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:layout_height="wrap_content"
         android:background="@color/bg_color"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/messNameRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:layout_marginTop="20dp">
 
             <TextView
+                android:id="@+id/rentDetailsMessName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mess Name"
@@ -54,69 +56,75 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/messNameRelativeLayout"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:id="@+id/rentResidentListRecyclerView"/>
 
-
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#FFF"
-        >
-
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:backgroundTint="#FFF"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                >
 
 
+                <TextView
+                    android:id="@+id/totalCollectionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Collection"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
 
-            <TextView
-                android:id="@+id/totalCollectionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Collection"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:id="@+id/collectedAmoundTextView"
-                android:paddingTop="3dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12000/20000 BDT"
-                android:layout_below="@+id/totalCollectionTextView"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="16dp"
-                />
+                <TextView
+                    android:id="@+id/collectedAmoundTextView"
+                    android:paddingTop="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12000/20000 BDT"
+                    android:layout_below="@+id/totalCollectionTextView"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="16dp"
+                    />
 
 
-            <Button
-                android:id="@+id/collectionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Close Collection"
-                android:backgroundTint="@color/primary_color"
-                android:textColor="#FFF"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="16dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="2dp" />
+                <Button
+                    android:id="@+id/collectionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Collect"
+                    android:backgroundTint="@color/primary_color"
+                    android:textColor="#FFF"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="2dp" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
 
