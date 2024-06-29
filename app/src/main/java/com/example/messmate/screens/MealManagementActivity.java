@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
+import com.example.messmate.adapters.WrapContentLinearLayoutManager;
 import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessDetailsModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -57,7 +58,8 @@ public class MealManagementActivity extends AppCompatActivity {
     public void loadFragment() {
 
         recyclerView = findViewById(R.id.mealManagementMessListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MealManagementActivity.this));
+        // Added wrapper for back button issue
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(MealManagementActivity.this, LinearLayoutManager.VERTICAL, false));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));
@@ -79,7 +81,7 @@ public class MealManagementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(MessDetailsModel item) {
                 String message = "Clicked " + item.mess_name + " ";
-                startActivity(new Intent(MealManagementActivity.this, RentMessDetailsActivity.class));
+                startActivity(new Intent(MealManagementActivity.this, MealManagementMenuUpdateActivity.class));
                 Toast.makeText(MealManagementActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         }, options);

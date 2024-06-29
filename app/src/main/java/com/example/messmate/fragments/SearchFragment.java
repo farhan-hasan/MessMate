@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
+import com.example.messmate.adapters.WrapContentLinearLayoutManager;
 import com.example.messmate.models.MessDetailsModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +43,8 @@ public class SearchFragment extends Fragment {
     public void loadFragment() {
 
         RecyclerView recyclerView = view.findViewById(R.id.searchMessListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Added wrapper for back button issue
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
 //        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));

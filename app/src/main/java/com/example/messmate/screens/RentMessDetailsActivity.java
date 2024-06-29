@@ -10,27 +10,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.adapters.ResidentListRecyclerAdapter;
-import com.example.messmate.models.Constants;
-import com.example.messmate.models.MessDetailsModel;
+import com.example.messmate.adapters.WrapContentLinearLayoutManager;
 import com.example.messmate.models.UserDetailsModel;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.dialogplus.DialogPlus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RentMessDetailsActivity extends AppCompatActivity {
     List<UserDetailsModel> residentList = new ArrayList<>();
     ResidentListRecyclerAdapter residentListRecyclerAdapter;
+    Button residentAddButton;
+    String messKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
         setSupportActionBar(toolbar);
+         messKey = getIntent().getStringExtra("messKey");
 
         // Enable the back button
         if (getSupportActionBar() != null) {
@@ -47,6 +53,108 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         }
 
         loadFragment();
+
+        residentAddButton = findViewById(R.id.residentAddButton);
+        residentAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addResident();
+            }
+        });
+
+    }
+
+    public void addResident() {
+        final DialogPlus dialogPlus = DialogPlus.newDialog(RentMessDetailsActivity.this)
+                .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.add_resident_popup))
+                .setExpanded(true, 700)
+                .create();
+
+        View popupView = dialogPlus.getHolderView();
+        EditText residentEmailEditText = popupView.findViewById(R.id.addResidentEmailEditText);
+        Button poppupAddButton = popupView.findViewById(R.id.residentAddButton);
+
+        dialogPlus.show();
+
+        poppupAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> data = new HashMap<>();
+
+                data.put("breakfast", false);
+                data.put("lunch", false);
+                data.put("dinner", false);
+                data.put("rent", false);
+
+                if (residentEmailEditText.getText()!=null) {
+                    String email = residentEmailEditText.getText().toString();
+                    String key = email.replace(".","");
+
+
+                    // Checking if user already exist in the mess
+                    for(UserDetailsModel user: residentList) {
+                        if(user.getKey().equals(key)) {
+                            Toast.makeText(RentMessDetailsActivity.this, "Resident already in the mess", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+
+                    // Checking if user exists in user table or not
+                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+                    usersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // User exists
+                                UserDetailsModel dbUser = dataSnapshot.getValue(UserDetailsModel.class);
+                                if(dbUser!=null) {
+                                    {
+
+                                        // Add if user exists in user table
+                                        DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("residents")
+                                                .child(key);
+                                        messRef.setValue(data).addOnCompleteListener(task -> {
+                                            if(task.isSuccessful()) {
+                                                Toast.makeText(RentMessDetailsActivity.this, "Resident added", Toast.LENGTH_SHORT).show();
+                                                residentList.clear();
+                                                fetchResidentKeys(messKey);
+                                                dialogPlus.dismiss();
+                                            }
+                                            else {
+                                                Toast.makeText(RentMessDetailsActivity.this, "Failed to add resident", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+
+
+                                    }
+                                }
+                            }
+                            else {
+                                Toast.makeText(RentMessDetailsActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Handle possible errors
+                            Toast.makeText(RentMessDetailsActivity.this, "DatabaseError: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+
+                }
+                else {
+                    Toast.makeText(RentMessDetailsActivity.this, "Please enter resident email", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
     }
 
@@ -63,7 +171,9 @@ public class RentMessDetailsActivity extends AppCompatActivity {
     public void loadFragment() {
 
         RecyclerView recyclerView = findViewById(R.id.rentResidentListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(RentMessDetailsActivity.this));
+
+        // Added wrapper for back button issue
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(RentMessDetailsActivity.this, LinearLayoutManager.VERTICAL, false));
 
         String messKey = getIntent().getStringExtra("messKey");
         assert messKey != null;

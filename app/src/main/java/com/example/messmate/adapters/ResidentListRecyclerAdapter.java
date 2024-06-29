@@ -50,9 +50,9 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UserDetailsModel resident = residentList.get(position);
-        holder.residentName.setText(resident.username);
-        holder.residentEmail.setText("Email: " + resident.email);
-        holder.residentPhone.setText("Phone: " + resident.phone);
+        holder.residentName.setText(resident.getUsername());
+        holder.residentEmail.setText("Email: " + resident.getEmail());
+        holder.residentPhone.setText("Phone: " + resident.getPhone());
         holder.itemView.setPadding(0, 0, 0, 0);
     }
 
