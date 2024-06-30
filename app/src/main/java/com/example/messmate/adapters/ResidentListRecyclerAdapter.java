@@ -216,7 +216,23 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                             .child(resident.getKey())
                             .child("mess_name").setValue("").addOnCompleteListener(task -> {
                                 if(task.isSuccessful()) {
-                                    Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                    // Setting isResident to false
+                                    {
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(resident.getKey())
+                                                .child("is_resident").setValue(false).addOnCompleteListener(task1 -> {
+                                                    if(task1.isSuccessful()) {
+                                                        Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                                        if (context instanceof Activity) {
+                                                            resetActivity();
+                                                        }
+                                                    }
+                                                    else {
+                                                        Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+
                                     if (context instanceof Activity) {
                                         resetActivity();
                                     }
