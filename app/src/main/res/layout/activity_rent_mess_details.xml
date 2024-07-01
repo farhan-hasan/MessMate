@@ -60,8 +60,6 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:id="@+id/rentResidentListRecyclerView"/>
@@ -125,6 +123,7 @@
                     android:layout_below="@+id/totalRentTextView"
                     android:textColor="@color/primary_color"
                     android:fontFamily="@font/roboto_light"
+                    android:textStyle="bold"
                     android:textSize="16sp"
                     />
 

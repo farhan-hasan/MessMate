@@ -133,9 +133,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         View popupView = dialogPlus.getHolderView();
         EditText residentEmailEditText = popupView.findViewById(R.id.addResidentEmailEditText);
         Button poppupAddButton = popupView.findViewById(R.id.residentAddButton);
-
         dialogPlus.show();
-
         poppupAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +148,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                     String email = residentEmailEditText.getText().toString();
                     String key = email.replace(".","");
 
-
                     // Checking if user already exist in the mess
                     for(UserDetailsModel user: residentList) {
                         if(user.getKey().equals(key)) {
@@ -158,8 +155,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                             return;
                         }
                     }
-
-
                     // Checking if user exists in user table or not
                     DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
                     usersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -170,7 +165,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                 UserDetailsModel dbUser = dataSnapshot.getValue(UserDetailsModel.class);
                                 if(dbUser!=null) {
                                     {
-
                                         // Add if user exists in user table
                                         DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
                                                 .child("Messes")
@@ -193,15 +187,25 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                                 .child(key)
                                                 .child("mess_name").setValue(messKey).addOnCompleteListener(task -> {
                                                     if(task.isSuccessful()) {
-                                                        Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                                        //Setting isResident to true
+                                                        {
+                                                            FirebaseDatabase.getInstance().getReference().child("users")
+                                                                    .child(key)
+                                                                    .child("is_resident").setValue(true).addOnCompleteListener(task1 -> {
+                                                                        if(task1.isSuccessful()) {
+                                                                            Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                                                            resetActivity();
+                                                                        }
+                                                                        else {
+                                                                            Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    });
+                                                        }
                                                     }
                                                     else {
                                                         Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
-
-
-
                                     }
                                 }
                             }

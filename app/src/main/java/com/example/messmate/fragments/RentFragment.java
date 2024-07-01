@@ -69,7 +69,6 @@ public class RentFragment extends Fragment {
                 .setExpanded(true, 1400)
                 .create();
 
-        //dialogPlus.show();
 
         View popupView = dialogPlus.getHolderView();
         EditText messNameEditText = popupView.findViewById(R.id.messNameEditText);

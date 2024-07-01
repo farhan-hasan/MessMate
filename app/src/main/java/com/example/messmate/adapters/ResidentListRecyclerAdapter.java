@@ -26,6 +26,8 @@ import com.example.messmate.screens.RegisterActivity;
 import com.example.messmate.screens.RentMessDetailsActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +110,80 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
         }
 
 
+        holder.paidButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isPaid = false;
+                if(holder.paidButton.getText().toString().equals("Paid")) {
+                    isPaid = true;
+                }
+
+                if(isPaid) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.residentName.getContext());
+                    builder.setTitle("Are you sure?");
+                    builder.setMessage("Are you sure the person did not pay the rent?");
+
+                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                        holder.paidButton.setText("Unpaid");
+                        holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red)));
+                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Messes")
+                                .child(resident.getMess_name())
+                                .child("residents")
+                                .child(resident.getKey());
+                        messesRef.child("rent").setValue(false).addOnCompleteListener(task -> {
+                            if(task.isSuccessful()) {
+                                Toast.makeText(context, "Set to Unpaid", Toast.LENGTH_SHORT).show();
+                                resetActivity();
+                            }
+                            else {
+                                Toast.makeText(context, "Failed to set to Unpaid", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.show();
+                }
+                else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.residentName.getContext());
+                    builder.setTitle("Are you sure?");
+                    builder.setMessage("Are you sure the person paid the rent?");
+
+                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                        holder.paidButton.setText("Paid");
+                        holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green)));
+                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Messes")
+                                .child(resident.getMess_name())
+                                .child("residents")
+                                .child(resident.getKey());
+                        messesRef.child("rent").setValue(true).addOnCompleteListener(task -> {
+                            if(task.isSuccessful()) {
+                                Toast.makeText(context, "Set to Paid", Toast.LENGTH_SHORT).show();
+                                resetActivity();
+                            }
+                            else {
+                                Toast.makeText(context, "Failed to set to Paid", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.show();
+                }
+
+            }
+        });
 
 
         holder.residentName.setText(resident.getUsername());
@@ -140,7 +216,23 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                             .child(resident.getKey())
                             .child("mess_name").setValue("").addOnCompleteListener(task -> {
                                 if(task.isSuccessful()) {
-                                    Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                    // Setting isResident to false
+                                    {
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(resident.getKey())
+                                                .child("is_resident").setValue(false).addOnCompleteListener(task1 -> {
+                                                    if(task1.isSuccessful()) {
+                                                        Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                                        if (context instanceof Activity) {
+                                                            resetActivity();
+                                                        }
+                                                    }
+                                                    else {
+                                                        Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+
                                     if (context instanceof Activity) {
                                         resetActivity();
                                     }
@@ -160,13 +252,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                     }
                 });
                 builder.show();
-            }
-        });
-
-        holder.paidButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
