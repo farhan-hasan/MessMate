@@ -69,7 +69,6 @@ public class RentFragment extends Fragment {
                 .setExpanded(true, 1400)
                 .create();
 
-
         View popupView = dialogPlus.getHolderView();
         EditText messNameEditText = popupView.findViewById(R.id.messNameEditText);
         EditText messAddressEditText = popupView.findViewById(R.id.messAddressEditText);
@@ -77,13 +76,10 @@ public class RentFragment extends Fragment {
         EditText rentPerSeatEditText = popupView.findViewById(R.id.rentPerSeatEditText);
         Button poppupAddButton = popupView.findViewById(R.id.messAddButton);
 
-
-
         dialogPlus.show();
         poppupAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Map<String,Object> messDetails = new HashMap<>();
                 Map<String,Object> breakFastDetails = new HashMap<>();
