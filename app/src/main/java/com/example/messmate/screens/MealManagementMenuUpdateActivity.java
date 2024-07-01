@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +36,7 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
     EditText breakfastMenuEditText, breakfastPriceEditText, lunchMenuEditText;
     EditText lunchPriceEditText, dinnerMenuEditText, dinnerPriceEditText;
     Button breakfastSaveButton, lunchSaveButton, dinnerSaveButton;
+    TextView breakfastAmountTextView, lunchAmountTextView, dinnerAmountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,10 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
         breakfastSaveButton = findViewById(R.id.breakfastSaveButton);
         lunchSaveButton = findViewById(R.id.lunchSaveButton);
         dinnerSaveButton = findViewById(R.id.dinnerSaveButton);
+        breakfastAmountTextView = findViewById(R.id.breakfastAmountTextView);
+        lunchAmountTextView = findViewById(R.id.lunchAmountTextView);
+        dinnerAmountTextView = findViewById(R.id.dinnerAmountTextView);
+
 
         Toolbar toolbar = findViewById(R.id.mealRequestToolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +67,31 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         initMenuDetails();
+
+        {
+            DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Messes")
+                    .child(messKey)
+                    .child("meal_request");
+            messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int breakfast = snapshot.child("breakfast").getValue(Integer.class);
+                    int lunch = snapshot.child("lunch").getValue(Integer.class);
+                    int dinner = snapshot.child("dinner").getValue(Integer.class);
+
+                    breakfastAmountTextView.setText(String.valueOf(breakfast));
+                    lunchAmountTextView.setText(String.valueOf(lunch));
+                    dinnerAmountTextView.setText(String.valueOf(dinner));
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(MealManagementMenuUpdateActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         breakfastSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override

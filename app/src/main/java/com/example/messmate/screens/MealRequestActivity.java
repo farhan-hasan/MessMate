@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,13 +73,71 @@ public class MealRequestActivity extends AppCompatActivity {
                         .child(Constants.userKey);
 
                 if(buttonState.equals("Remove")) {
-                    messesRef.child("breakfast").setValue(false);
                     buttonforbreakfast.setText("Request");
                     buttonforbreakfast.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.primary_color)));
+                    messesRef.child("breakfast").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request decrement
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("breakfast");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("breakfast");
+                                        messesRef.setValue(val - 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 } else {
-                    messesRef.child("breakfast").setValue(true);
                     buttonforbreakfast.setText("Remove");
                     buttonforbreakfast.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.red)));
+                    messesRef.child("breakfast").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request increment
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("breakfast");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("breakfast");
+                                        messesRef.setValue(val + 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });;
                 }
 
 
@@ -87,7 +147,7 @@ public class MealRequestActivity extends AppCompatActivity {
         buttonfordinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String buttonState = buttonforbreakfast.getText().toString();
+                String buttonState = buttonfordinner.getText().toString();
                 DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                         .child("Messes")
                         .child(messKey)
@@ -95,13 +155,71 @@ public class MealRequestActivity extends AppCompatActivity {
                         .child(Constants.userKey);
 
                 if(buttonState.equals("Remove")) {
-                    messesRef.child("dinner").setValue(false);
                     buttonfordinner.setText("Request");
                     buttonfordinner.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.primary_color)));
+                    messesRef.child("dinner").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request decrement
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("dinner");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("dinner");
+                                        messesRef.setValue(val - 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });;
                 } else {
-                    messesRef.child("dinner").setValue(true);
                     buttonfordinner.setText("Remove");
                     buttonfordinner.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.red)));
+                    messesRef.child("dinner").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request increment
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("dinner");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("dinner");
+                                        messesRef.setValue(val + 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
 
 
@@ -111,7 +229,7 @@ public class MealRequestActivity extends AppCompatActivity {
         buttonforlunch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String buttonState = buttonforbreakfast.getText().toString();
+                String buttonState = buttonforlunch.getText().toString();
                 DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                         .child("Messes")
                         .child(messKey)
@@ -119,13 +237,71 @@ public class MealRequestActivity extends AppCompatActivity {
                         .child(Constants.userKey);
 
                 if(buttonState.equals("Remove")) {
-                    messesRef.child("lunch").setValue(false);
                     buttonforlunch.setText("Request");
                     buttonforlunch.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.primary_color)));
+                    messesRef.child("lunch").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request decrement
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("lunch");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("lunch");
+                                        messesRef.setValue(val - 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 } else {
-                    messesRef.child("lunch").setValue(true);
                     buttonforlunch.setText("Remove");
                     buttonforlunch.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MealRequestActivity.this, R.color.red)));
+                    messesRef.child("lunch").setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // Meal request increment
+                            {
+                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey)
+                                        .child("meal_request")
+                                        .child("lunch");
+                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int val = snapshot.getValue(Integer.class);
+                                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("Messes")
+                                                .child(messKey)
+                                                .child("meal_request")
+                                                .child("lunch");
+                                        messesRef.setValue(val + 1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
 
 
