@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,262 +20,394 @@
 
 
     <ScrollView
+        android:layout_above="@+id/menuUpdateCard"
+        android:id="@+id/mealRequestScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/bg_color">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mealRequestToolbar"
+        android:layout_marginTop="0dp"
+        android:background="@color/bg_color"
+        tools:ignore="UnknownId">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:background="@color/bg_color"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
             <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:backgroundTint="#FFF"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                card_view:cardUseCompatPadding="true"
+                android:backgroundTint="#FFF"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:layout_gravity="center"
+                    android:padding="16dp"
 
                     >
-
 
 
                     <TextView
                         android:id="@+id/breakfastTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="Break Fast"
                         android:textColor="@color/primary_color"
-                        android:fontFamily="@font/roboto_bold"
                         android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/breakfastMenuEditText"
-                        android:layout_below="@+id/breakfastTextView"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/breakfastTextView"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Menu"
                         android:inputType="text"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Menu"/>
+                        android:textColorHint="@color/primary_color" />
 
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/breakfastPriceEditText"
-                        android:layout_below="@+id/breakfastMenuEditText"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/breakfastMenuEditText"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Price"
                         android:inputType="number"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Price"/>
+                        android:textColorHint="@color/primary_color" />
 
                     <Button
                         android:id="@+id/breakfastSaveButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Save"
-                        android:backgroundTint="@color/primary_color"
-                        android:textColor="#FFF"
-                        android:fontFamily="@font/roboto_regular"
-                        android:layout_marginTop="2dp"
-                        android:textSize="14sp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="false"
-                        android:layout_marginEnd="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/primary_color"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Save"
+                        android:textColor="#FFF"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:backgroundTint="#FFF"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                card_view:cardUseCompatPadding="true"
+                android:backgroundTint="#FFF"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:layout_gravity="center"
+                    android:padding="16dp"
 
                     >
-
 
 
                     <TextView
                         android:id="@+id/lunchTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="Lunch"
                         android:textColor="@color/primary_color"
-                        android:fontFamily="@font/roboto_bold"
                         android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/lunchMenuEditText"
-                        android:layout_below="@+id/lunchTextView"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/lunchTextView"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Menu"
                         android:inputType="text"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Menu"/>
+                        android:textColorHint="@color/primary_color" />
 
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/lunchPriceEditText"
-                        android:layout_below="@+id/lunchMenuEditText"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/lunchMenuEditText"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Price"
                         android:inputType="number"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Price"/>
+                        android:textColorHint="@color/primary_color" />
 
                     <Button
                         android:id="@+id/lunchSaveButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Save"
-                        android:backgroundTint="@color/primary_color"
-                        android:textColor="#FFF"
-                        android:fontFamily="@font/roboto_regular"
-                        android:layout_marginTop="2dp"
-                        android:textSize="14sp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="false"
-                        android:layout_marginEnd="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/primary_color"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Save"
+                        android:textColor="#FFF"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:backgroundTint="#FFF"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                card_view:cardUseCompatPadding="true"
+                android:backgroundTint="#FFF"
                 card_view:cardCornerRadius="8dp"
-                card_view:cardElevation="5dp">
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:layout_gravity="center"
+                    android:padding="16dp"
 
                     >
-
 
 
                     <TextView
                         android:id="@+id/dinnerTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="Dinner"
                         android:textColor="@color/primary_color"
-                        android:fontFamily="@font/roboto_bold"
                         android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/dinnerMenuEditText"
-                        android:layout_below="@+id/dinnerTextView"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/dinnerTextView"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Menu"
                         android:inputType="text"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Menu"/>
+                        android:textColorHint="@color/primary_color" />
 
 
                     <EditText
-                        android:layout_marginTop="10dp"
                         android:id="@+id/dinnerPriceEditText"
-                        android:layout_below="@+id/dinnerMenuEditText"
                         android:layout_width="match_parent"
-                        android:textColorHint="@color/primary_color"
                         android:layout_height="40dp"
+                        android:layout_below="@+id/dinnerMenuEditText"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/text_field_border"
+                        android:drawablePadding="10dp"
                         android:ems="10"
+                        android:hint="Price"
                         android:inputType="number"
                         android:padding="10dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Price"/>
+                        android:textColorHint="@color/primary_color" />
 
                     <Button
                         android:id="@+id/dinnerSaveButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Save"
-                        android:backgroundTint="@color/primary_color"
-                        android:textColor="#FFF"
-                        android:fontFamily="@font/roboto_regular"
-                        android:layout_marginTop="2dp"
-                        android:textSize="14sp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="false"
-                        android:layout_marginEnd="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/primary_color"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Save"
+                        android:textColor="#FFF"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
 
-
-
-
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/menuUpdateCard"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFF">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            >
+
+            <TextView
+                android:id="@+id/totalRequestTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Meal Request"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalRequestTextView"
+                >
+
+                <TextView
+                    android:id="@+id/breakfastMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Breakfast: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/breakfastAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/breakfastMealTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/lunchMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/breakfastMealTextView"
+                    android:text="Lunch: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/lunchAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/lunchMealTextView"
+                    android:layout_below="@+id/breakfastAmountTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/dinnerMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lunchMealTextView"
+                    android:text="Dinner: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/dinnerAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/lunchMealTextView"
+                    android:layout_below="@+id/lunchMealTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/mealCloseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Close"
+                    android:textColor="#FFF"
+                    android:textSize="14sp" />
+
+
+
+
+
+
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
 
 
 

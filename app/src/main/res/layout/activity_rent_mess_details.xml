@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,10 +20,14 @@
         app:titleTextColor="#FFF" />
 
     <RelativeLayout
+        android:layout_below="@+id/rentMessDetailsToolbar"
+        android:id="@+id/rentMessDetailsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_color"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/rentMessDetailsCard"
+        >
 
         <RelativeLayout
             android:id="@+id/messNameRelativeLayout"
@@ -64,93 +68,95 @@
             android:scrollbars="vertical"
             android:id="@+id/rentResidentListRecyclerView"/>
 
-        <androidx.cardview.widget.CardView
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFF"
-            >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                >
-
-
-                <TextView
-                    android:id="@+id/totalRentTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Total Rent: "
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/totalRentAmountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/totalRentTextView"
-                    android:text=""
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_light"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/collectedTextField"
-                    android:paddingTop="3dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Collected Amount: "
-                    android:layout_below="@+id/totalRentTextView"
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="16sp"
-                    />
-
-                <TextView
-                    android:id="@+id/collectedAmountTextView"
-                    android:paddingTop="3dp"
-                    android:layout_toEndOf="@+id/collectedTextField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_below="@+id/totalRentTextView"
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_light"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    />
-
-
-                <Button
-                    android:id="@+id/closeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Close"
-                    android:backgroundTint="@color/primary_color"
-                    android:textColor="#FFF"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textSize="16dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="2dp" />
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
 
 
     </RelativeLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rentMessDetailsCard"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFF"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            >
 
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/totalRentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Rent: "
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/totalRentAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/totalRentTextView"
+                android:text=""
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_light"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/collectedTextField"
+                android:paddingTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Collected Amount: "
+                android:layout_below="@+id/totalRentTextView"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/collectedAmountTextView"
+                android:paddingTop="3dp"
+                android:layout_toEndOf="@+id/collectedTextField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_below="@+id/totalRentTextView"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_light"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
+
+
+            <Button
+                android:id="@+id/closeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="#FFF"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="2dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
 
 
 
