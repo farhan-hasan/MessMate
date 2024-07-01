@@ -60,16 +60,6 @@ public class MealManagementActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.mealManagementMessListRecyclerView);
         // Added wrapper for back button issue
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(MealManagementActivity.this, LinearLayoutManager.VERTICAL, false));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 1", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 2", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 3", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 4", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 5", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 6", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 7", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 8", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 9", "Sylhet", "+8801723232323"));
-//        messListCardItems.add(new MessListCardModel("10", "My mess 10", "Sylhet", "+8801723232323"));
         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference().child("Messes");
         Query query = messesRef.orderByChild("admin").equalTo(Constants.userKey);
 
@@ -80,9 +70,12 @@ public class MealManagementActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(MessDetailsModel item) {
-                String message = "Clicked " + item.mess_name + " ";
-                startActivity(new Intent(MealManagementActivity.this, MealManagementMenuUpdateActivity.class));
-                Toast.makeText(MealManagementActivity.this, message, Toast.LENGTH_SHORT).show();
+                String key = item.mess_name.toLowerCase() + "_" + item.mess_address.toLowerCase();
+                String message = "Key " + key.replace(" ","");
+                Intent intent = new Intent(MealManagementActivity.this, MealManagementMenuUpdateActivity.class);
+                intent.putExtra("messKey", key.replace(" ",""));
+                intent.putExtra("messName", item.mess_name);
+                startActivity(intent);
             }
         }, options);
         recyclerView.setAdapter(messListRecyclerAdapter);

@@ -3,26 +3,25 @@ package com.example.messmate.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.messmate.R;
-import com.example.messmate.screens.HomeActivity;
-import com.example.messmate.screens.LoginActivity;
+import com.example.messmate.models.Constants;
 import com.example.messmate.screens.MealManagementActivity;
+import com.example.messmate.screens.MealManagementMenuUpdateActivity;
 import com.example.messmate.screens.MealRequestActivity;
-import com.example.messmate.screens.RegisterActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MealFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MealFragment extends Fragment {
 
     CardView mealRequestCardView, mealManagementCardView;
@@ -41,8 +40,29 @@ public class MealFragment extends Fragment {
         mealRequestCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event
-                startActivity(new Intent(getActivity(), MealRequestActivity.class));
+                final String[] messKey = new String[1];
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                        .child("users")
+                        .child(Constants.userKey);
+
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            messKey[0] = snapshot.child("mess_name").getValue(String.class);
+                            Intent intent = new Intent(getActivity(), MealRequestActivity.class);
+                            intent.putExtra("messKey", messKey[0]);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
             }
         });
 

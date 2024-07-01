@@ -49,8 +49,8 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         messKey = getIntent().getStringExtra("messKey");
         messName = getIntent().getStringExtra("messName");
 
-//        Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
+        setSupportActionBar(toolbar);
 
         messNameTextView = findViewById(R.id.rentDetailsMessName);
         messNameTextView.setText(messName);
@@ -137,6 +137,32 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         poppupAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final int[] availableSeats = {0};
+                // Check available seats
+                {
+                    DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
+                            .child("Messes")
+                            .child(messKey);
+
+                    messRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            availableSeats[0] = snapshot.child("available_seats").getValue(Integer.class);
+                            if(availableSeats[0]<=0) {
+                                Toast.makeText(RentMessDetailsActivity.this, "There is no available seats in this mess", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(RentMessDetailsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
+
                 Map<String, Object> data = new HashMap<>();
 
                 data.put("breakfast", false);
@@ -194,7 +220,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                                                     .child("is_resident").setValue(true).addOnCompleteListener(task1 -> {
                                                                         if(task1.isSuccessful()) {
                                                                             Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
-                                                                            resetActivity();
                                                                         }
                                                                         else {
                                                                             Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
@@ -206,6 +231,14 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                                         Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
+                                        // reducing available seats by one
+                                        {
+                                            messRef = FirebaseDatabase.getInstance().getReference()
+                                                    .child("Messes")
+                                                    .child(messKey);
+                                            messRef.child("available_seats").setValue(availableSeats[0] - 1);
+                                        }
+
                                     }
                                 }
                             }

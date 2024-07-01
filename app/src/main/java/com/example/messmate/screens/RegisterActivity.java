@@ -100,7 +100,7 @@ DatabaseReference userRef;
                 userData.put("email", email);
                 userData.put("phone", phone);
                 userData.put("key", key);
-                userData.put("mess_name", key);
+                userData.put("mess_name", "");
                 userData.put("is_resident", false);
 
 
