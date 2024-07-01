@@ -7,14 +7,19 @@
     android:background="@color/bg_color"
     tools:context=".screens.SplashScreen">
 
+<!--    <ImageView-->
+<!--        android:id="@+id/gifImageView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"/>-->
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="233dp"
-        android:layout_height="287dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/splash_screen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

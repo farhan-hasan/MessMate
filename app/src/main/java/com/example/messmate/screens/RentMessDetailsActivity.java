@@ -49,8 +49,8 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         messKey = getIntent().getStringExtra("messKey");
         messName = getIntent().getStringExtra("messName");
 
-        Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.rentMessDetailsToolbar);
+//        setSupportActionBar(toolbar);
 
         messNameTextView = findViewById(R.id.rentDetailsMessName);
         messNameTextView.setText(messName);
