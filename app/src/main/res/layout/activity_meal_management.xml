@@ -22,8 +22,6 @@ tools:context=".screens.MealRequestActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:background="@color/bg_color"
         android:orientation="vertical"
     >
@@ -37,6 +35,8 @@ tools:context=".screens.MealRequestActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Meal Management"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:textColor="@color/primary_color"
             android:fontFamily="@font/roboto_bold"
             android:textSize="32dp"
@@ -49,6 +49,8 @@ tools:context=".screens.MealRequestActivity">
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:clipToPadding="false"
         android:scrollbars="vertical"
         android:id="@+id/mealManagementMessListRecyclerView"/>

@@ -33,7 +33,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.dialogplus.DialogPlus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,6 +105,59 @@ public class RentFragment extends Fragment {
                             if (snapshot
                                     .exists()) {
                                 adminPhone[0] = snapshot.getValue(String.class);
+
+                                {
+                                    String key = messName + "_" + messAddress;
+                                    key = key.replace(" ", "").toLowerCase();
+                                    messDetails.put("mess_name", messName);
+                                    messDetails.put("mess_address", messAddress);
+                                    messDetails.put("number_of_seats", numberOfSeats);
+                                    messDetails.put("available_seats", numberOfSeats);
+                                    messDetails.put("rent_per_seat", rentPerSeat);
+                                    messDetails.put("admin", Constants.userKey);
+                                    messDetails.put("admin_phone", adminPhone[0]);
+                                    messDetails.put("mess_key", key);
+
+                                    breakFastDetails.put("menu", "");
+                                    breakFastDetails.put("price", 0);
+                                    lunchDetails.put("menu", "");
+                                    lunchDetails.put("price", 0);
+                                    dinnerDetails.put("menu", "");
+                                    dinnerDetails.put("price", 0);
+                                    mealRequest.put("breakfast", 0);
+                                    mealRequest.put("lunch", 0);
+                                    mealRequest.put("dinner", 0);
+
+                                    messDetails.put("breakfast", breakFastDetails);
+                                    messDetails.put("lunch", lunchDetails);
+                                    messDetails.put("dinner", dinnerDetails);
+                                    messDetails.put("meal_request", mealRequest);
+
+                                    dummy_user.put("breakfast", false);
+                                    dummy_user.put("lunch", false);
+                                    dummy_user.put("dinner", false);
+                                    dummy_user.put("rent", false);
+                                    residents.put("dummy@dummycom", dummy_user);
+                                    messDetails.put("residents",residents);
+
+                                    String messKey = messName.toLowerCase() + "_" + messAddress.toLowerCase();
+
+                                    FirebaseDatabase.getInstance().getReference().child("Messes")
+                                            .child(messKey.replace(" ","")).setValue(messDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(requireContext(), "Mess added successfully", Toast.LENGTH_SHORT).show();
+                                                    dialogPlus.dismiss();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(requireContext(), "Failed to add mess data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+
+
                             }
                         }
 
@@ -115,51 +167,7 @@ public class RentFragment extends Fragment {
                         }
                     });
 
-                    messDetails.put("mess_name", messName);
-                    messDetails.put("mess_address", messAddress);
-                    messDetails.put("number_of_seats", numberOfSeats);
-                    messDetails.put("available_seats", numberOfSeats);
-                    messDetails.put("rent_per_seat", rentPerSeat);
-                    messDetails.put("admin", Constants.userKey);
-                    messDetails.put("admin_phone", adminPhone[0]);
 
-                    breakFastDetails.put("menu", "");
-                    breakFastDetails.put("price", 0);
-                    lunchDetails.put("menu", "");
-                    lunchDetails.put("price", 0);
-                    dinnerDetails.put("menu", "");
-                    dinnerDetails.put("price", 0);
-                    mealRequest.put("breakfast", 0);
-                    mealRequest.put("lunch", 0);
-                    mealRequest.put("dinner", 0);
-
-                    messDetails.put("breakfast", breakFastDetails);
-                    messDetails.put("lunch", lunchDetails);
-                    messDetails.put("dinner", dinnerDetails);
-                    messDetails.put("meal_request", mealRequest);
-
-                    dummy_user.put("breakfast", false);
-                    dummy_user.put("lunch", false);
-                    dummy_user.put("dinner", false);
-                    dummy_user.put("rent", false);
-                    residents.put("dummy@dummycom", dummy_user);
-                    messDetails.put("residents",residents);
-
-                    String messKey = messName.toLowerCase() + "_" + messAddress.toLowerCase();
-
-                    FirebaseDatabase.getInstance().getReference().child("Messes")
-                            .child(messKey.replace(" ","")).setValue(messDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(requireContext(), "Mess added successfully", Toast.LENGTH_SHORT).show();
-                                    dialogPlus.dismiss();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(requireContext(), "Failed to add mess data", Toast.LENGTH_SHORT).show();
-                                }
-                            });
 
                 } else {
                     Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -168,6 +176,7 @@ public class RentFragment extends Fragment {
         });
 
     }
+
 
     public void loadFragment() {
 

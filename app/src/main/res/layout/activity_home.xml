@@ -24,17 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="?attr/actionBarSize"
         >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:background="@color/bg_color">
+<!--        <ScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            android:background="@color/bg_color">-->
 
             <FrameLayout
                 android:id="@+id/homeFragmentContainer"
@@ -42,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/homeBottomNavBar" />
 
-        </ScrollView>
+<!--        </ScrollView>-->
 
     </LinearLayout>
 

@@ -5,120 +5,133 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RentFragment">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Profile"
             android:layout_marginTop="20dp"
-            android:textSize="32dp"
-            android:textColor="@color/primary_color"
             android:fontFamily="@font/roboto_bold"
-            />
-
-        <EditText
-            android:layout_marginTop="20dp"
-            android:id="@+id/nameEditText"
-            android:layout_width="match_parent"
+            android:text="My Profile"
             android:textColor="@color/primary_color"
-            android:textColorHint="@color/primary_color"
-            android:layout_height="50dp"
-            android:background="@drawable/text_field_border"
-            android:ems="10"
-            android:inputType="text"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:hint="Name"
-            android:drawableLeft="@drawable/personsvg"/>
+            android:textSize="32dp" />
 
-
-        <EditText
-            android:id="@+id/phoneEditText"
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:textColor="@color/primary_color"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:textColorHint="@color/primary_color"
-            android:background="@drawable/text_field_border"
-            android:hint="Phone"
-            android:drawableLeft="@drawable/phonesvg"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
-            android:inputType="number" />
+            android:layout_height="match_parent"
+            android:background="@color/bg_color">
 
-        <EditText
-            android:id="@+id/oldPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColorHint="@color/primary_color"
-            android:textColor="@color/primary_color"
-            android:ems="10"
-            android:background="@drawable/text_field_border"
-            android:hint="Old Password"
-            android:drawableLeft="@drawable/passwordsvg"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/newPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:background="@drawable/text_field_border"
-            android:textColor="@color/primary_color"
-            android:hint="New Password"
-            android:textColorHint="@color/primary_color"
-            android:drawableLeft="@drawable/passwordsvg"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text" />
+                <EditText
+                    android:id="@+id/nameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/personsvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_color"
+                    android:textColorHint="@color/primary_color" />
 
-        <EditText
-            android:id="@+id/NewconfirmPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColorHint="@color/primary_color"
-            android:ems="10"
-            android:textColor="@color/primary_color"
-            android:background="@drawable/text_field_border"
-            android:hint="Confirm New Password"
-            android:drawableLeft="@drawable/passwordsvg"
-            android:padding="10dp"
-            android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text" />
+                <EditText
+                    android:id="@+id/phoneEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/phonesvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Phone"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_color"
+                    android:textColorHint="@color/primary_color" />
 
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/profileSaveButton"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:textColor="#FFF"
-            android:text="Update Profile" />
+                <EditText
+                    android:id="@+id/oldPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/passwordsvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Old Password"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_color"
+                    android:textColorHint="@color/primary_color" />
 
-        <Button
-            style="?android:attr/absListViewStyle"
-            android:id="@+id/profileUpdatePassButton"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primary_color"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:textColor="#FFF"
-            android:text="Update Password" />
+                <EditText
+                    android:id="@+id/newPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/passwordsvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="New Password"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_color"
+                    android:textColorHint="@color/primary_color" />
 
+                <EditText
+                    android:id="@+id/NewconfirmPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/passwordsvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Confirm New Password"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_color"
+                    android:textColorHint="@color/primary_color" />
 
+                <Button
+                    android:id="@+id/profileSaveButton"
+                    style="?android:attr/absListViewStyle"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:text="Update Profile"
+                    android:textColor="#FFF" />
+
+                <Button
+                    android:id="@+id/profileUpdatePassButton"
+                    style="?android:attr/absListViewStyle"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:text="Update Password"
+                    android:textColor="#FFF" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
 
     </LinearLayout>
