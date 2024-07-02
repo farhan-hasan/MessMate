@@ -8,6 +8,8 @@
 
     <LinearLayout
         android:layout_marginTop="20dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,12 +19,14 @@
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/text_field_border"
             android:textColor="@color/primary_color"
             android:textColorHint="@color/primary_color"
             android:ems="10"
+            android:paddingLeft="20dp"
             android:inputType="text"
-            android:padding="10dp"
             android:drawablePadding="10dp"
             android:hint="Search for Mess"/>
 

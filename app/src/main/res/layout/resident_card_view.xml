@@ -3,7 +3,8 @@
 <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -14,74 +15,138 @@
         android:id="@+id/resident_card_view"
         card_view:cardElevation="4dp">
 
-        <RelativeLayout
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_marginTop="1dp"
-                android:id="@+id/residentNameTextView"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/residentCardLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/messImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="30dp"
+                    android:src="@drawable/residentpersonsvg"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp" />
+
+                <TextView
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/residentNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resident Name"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_toEndOf="@id/messImage"
+                    android:layout_alignTop="@id/messImage"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/residentEmailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Email: abc@gmail.com"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="14sp"
+                    android:layout_below="@id/residentNameTextView"
+                    android:layout_alignStart="@id/residentNameTextView" />
+
+
+                <TextView
+                    android:id="@+id/residentPhoneTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Phone : +8801712334556"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="14sp"
+                    android:layout_below="@id/residentEmailTextView"
+                    android:layout_alignStart="@id/residentNameTextView" />
+
+<!--                <Button-->
+<!--                    android:id="@+id/paidButton"-->
+<!--                    android:layout_width="85dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:text="Unpaid"-->
+<!--                    android:backgroundTint="#FFF"-->
+<!--                    android:textColor="#FFF"-->
+<!--                    android:fontFamily="@font/roboto_regular"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_marginEnd="2dp" />-->
+
+<!--                <Button-->
+<!--                    android:id="@+id/removeButton"-->
+<!--                    android:layout_width="85dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:text="Remove"-->
+<!--                    android:backgroundTint="@color/red"-->
+<!--                    android:textColor="#FFF"-->
+<!--                    android:fontFamily="@font/roboto_regular"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_below="@+id/paidButton"-->
+<!--                    android:layout_marginEnd="2dp" />-->
+
+            </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttonLayout"
+                android:paddingTop="16dp"
+                android:layout_below="@+id/messDetailsLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Resident Name"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp" />
+                >
 
-            <TextView
-                android:id="@+id/residentEmailTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="Email: abc@gmail.com"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="14sp"
-                android:layout_below="@id/residentNameTextView"
-                android:layout_alignStart="@id/residentNameTextView" />
+                <Button
+                    android:id="@+id/paidButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:text="Edit"
+                    android:textColor="#FFF"
+                    app:layout_constraintEnd_toStartOf="@+id/messRemoveButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintWidth_percent="0.5"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toStartOf="@+id/removeButton"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
 
+                <Button
+                    android:id="@+id/removeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/red"
+                    android:text="Remove"
+                    android:textColor="#FFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/messEditButton"
+                    app:layout_constraintWidth_percent="0.5"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toEndOf="@+id/paidButton"
+                    card_view:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/residentPhoneTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Phone : +8801712334556"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="14sp"
-                android:layout_below="@id/residentEmailTextView"
-                android:layout_alignStart="@id/residentNameTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/paidButton"
-                android:layout_width="85dp"
-                android:layout_height="40dp"
-                android:text="Unpaid"
-                android:backgroundTint="#FFF"
-                android:textColor="#FFF"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="9dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="2dp" />
-
-            <Button
-                android:id="@+id/removeButton"
-                android:layout_width="85dp"
-                android:layout_height="40dp"
-                android:text="Remove"
-                android:backgroundTint="@color/red"
-                android:textColor="#FFF"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="9dp"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/paidButton"
-                android:layout_marginEnd="2dp" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

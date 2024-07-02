@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessDetailsModel {
+    public String mess_key;
     public String admin;
     public String admin_phone;
     public String mess_name;
