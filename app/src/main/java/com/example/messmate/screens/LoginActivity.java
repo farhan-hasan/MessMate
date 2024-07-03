@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             inPassword.setError("Enter 8 Characters");
         }
         else {
-            progressDialog.setMessage("Login...");
+            progressDialog.setMessage("Login in progress...");
             progressDialog.setTitle("Login");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
