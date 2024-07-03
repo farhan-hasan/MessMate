@@ -64,20 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId()==R.id.logouttoolbar){
-
             logOut();
-
-/*progressDialog.show();*/
-                /*FirebaseAuth.getInstance().signOut();
-                //progressDialog.dismiss();
-
-                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
-                startActivity(intent);
-                progressDialog.dismiss();
-*/
-
-                
-
         }
         return super.onOptionsItemSelected(item);
     }
