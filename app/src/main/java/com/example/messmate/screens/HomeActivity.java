@@ -8,8 +8,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.fragments.MealFragment;
@@ -17,8 +25,17 @@ import com.example.messmate.fragments.ProfileFragment;
 import com.example.messmate.fragments.RentFragment;
 import com.example.messmate.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.dialogplus.DialogPlus;
 
 public class HomeActivity extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
+    ProgressDialog progressDialog;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +44,78 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.homeScreenToolbar);
         setSupportActionBar(toolbar);
+        firebaseAuth=FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Logout in progress...");
+        progressDialog.setTitle("Logout");
+        progressDialog.setCanceledOnTouchOutside(false);
 
         bottomNavBarController();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()==R.id.logouttoolbar){
+
+            logOut();
+
+/*progressDialog.show();*/
+                /*FirebaseAuth.getInstance().signOut();
+                //progressDialog.dismiss();
+
+                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
+                startActivity(intent);
+                progressDialog.dismiss();
+*/
+
+                
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Do you want to Log Out?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+        progressDialog.show();
+        // Use a Handler to delay the intent for 2 seconds
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Dismiss the DialogPlus dialog
+
+                FirebaseAuth.getInstance().signOut();
+                // Start the new activity
+                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
+                startActivity(intent);
+                progressDialog.dismiss();
+
+
+                finish();
+            }
+        }, 1500);
+    });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+
+    }
+
 
     public void bottomNavBarController() {
         bottomNavigationView = findViewById(R.id.homeBottomNavBar);

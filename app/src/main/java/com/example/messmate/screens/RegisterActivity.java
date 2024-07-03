@@ -119,7 +119,7 @@ DatabaseReference userRef;
             }
 
 
-            progressDialog.setMessage("Registration...");
+            progressDialog.setMessage("Registration in progress...");
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
