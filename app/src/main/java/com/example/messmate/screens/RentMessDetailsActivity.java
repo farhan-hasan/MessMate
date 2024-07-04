@@ -81,12 +81,14 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         });
 
     }
+
     public void resetActivity() {
         Activity activity = (Activity) RentMessDetailsActivity.this;
         Intent intent = activity.getIntent();
         activity.finish();
         activity.startActivity(intent);
     }
+
     public void closeCollection() {
         AlertDialog.Builder builder = new AlertDialog.Builder(RentMessDetailsActivity.this);
         builder.setTitle("Are you sure?");
@@ -107,6 +109,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                     }
                     resetActivity();
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
@@ -124,6 +127,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
     public void addResident() {
         final DialogPlus dialogPlus = DialogPlus.newDialog(RentMessDetailsActivity.this)
                 .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.add_resident_popup))
@@ -138,28 +142,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final int[] availableSeats = {0};
-                // Check available seats
-                {
-                    DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
-                            .child("Messes")
-                            .child(messKey);
-
-                    messRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            availableSeats[0] = snapshot.child("available_seats").getValue(Integer.class);
-                            if(availableSeats[0]<=0) {
-                                Toast.makeText(RentMessDetailsActivity.this, "There is no available seats in this mess", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(RentMessDetailsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
 
 
 
@@ -170,94 +152,113 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                 data.put("dinner", false);
                 data.put("rent", false);
 
-                if (residentEmailEditText.getText()!=null) {
+                if (residentEmailEditText.getText() != null) {
                     String email = residentEmailEditText.getText().toString();
-                    String key = email.replace(".","");
+                    String key = email.replace(".", "");
 
-                    // Checking if user already exist in the mess
-                    for(UserDetailsModel user: residentList) {
-                        if(user.getKey().equals(key)) {
-                            Toast.makeText(RentMessDetailsActivity.this, "Resident already in the mess", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    // Checking if user exists in user table or not
-                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
-                    usersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    // Check available seats
+                    DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
+                            .child("Messes")
+                            .child(messKey);
+
+                    messRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                // User exists
-                                UserDetailsModel dbUser = dataSnapshot.getValue(UserDetailsModel.class);
-                                if(dbUser!=null) {
-                                    {
-                                        // Add if user exists in user table
-                                        DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
-                                                .child("Messes")
-                                                .child(messKey)
-                                                .child("residents")
-                                                .child(key);
-                                        messRef.setValue(data).addOnCompleteListener(task -> {
-                                            if(task.isSuccessful()) {
-                                                Toast.makeText(RentMessDetailsActivity.this, "Resident added", Toast.LENGTH_SHORT).show();
-                                                residentList.clear();
-                                                fetchResidentKeys(messKey);
-                                                dialogPlus.dismiss();
-                                                resetActivity();
-                                            }
-                                            else {
-                                                Toast.makeText(RentMessDetailsActivity.this, "Failed to add resident", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                        FirebaseDatabase.getInstance().getReference().child("users")
-                                                .child(key)
-                                                .child("mess_name").setValue(messKey).addOnCompleteListener(task -> {
-                                                    if(task.isSuccessful()) {
-                                                        //Setting isResident to true
-                                                        {
-                                                            FirebaseDatabase.getInstance().getReference().child("users")
-                                                                    .child(key)
-                                                                    .child("is_resident").setValue(true).addOnCompleteListener(task1 -> {
-                                                                        if(task1.isSuccessful()) {
-                                                                            Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                        else {
-                                                                            Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    });
-                                                        }
-                                                    }
-                                                    else {
-                                                        Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                        // reducing available seats by one
-                                        {
-                                            messRef = FirebaseDatabase.getInstance().getReference()
-                                                    .child("Messes")
-                                                    .child(messKey);
-                                            messRef.child("available_seats").setValue(availableSeats[0] - 1);
-                                        }
-
-                                    }
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            availableSeats[0] = snapshot.child("available_seats").getValue(Integer.class);
+                            if (availableSeats[0] <= 0) {
+                                Toast.makeText(RentMessDetailsActivity.this, "There is no available seats in this mess", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            // Checking if user already exist in the mess
+                            for (UserDetailsModel user : residentList) {
+                                if (user.getKey().equals(key)) {
+                                    Toast.makeText(RentMessDetailsActivity.this, "Resident already in this mess", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
                             }
-                            else {
-                                Toast.makeText(RentMessDetailsActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
-                            }
+                            // Checking if user exists in user table or not
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+                            usersRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        // User exists
+                                        UserDetailsModel dbUser = dataSnapshot.getValue(UserDetailsModel.class);
+                                        if (dbUser != null) {
+                                            boolean isResident = dataSnapshot.child("is_resident").getValue(Boolean.class);
+                                            if (isResident == true) {
+                                                Toast.makeText(RentMessDetailsActivity.this, "Resident already in a mess", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+
+                                            // Adding the user
+                                            {
+                                                // Add if user exists in user table
+                                                DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
+                                                        .child("Messes")
+                                                        .child(messKey)
+                                                        .child("residents")
+                                                        .child(key);
+                                                messRef.setValue(data).addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(RentMessDetailsActivity.this, "Resident added", Toast.LENGTH_SHORT).show();
+                                                        residentListRecyclerAdapter.updateList(messKey);
+                                                        setTotalRentAmount();
+                                                        dialogPlus.dismiss();
+                                                    } else {
+                                                        Toast.makeText(RentMessDetailsActivity.this, "Failed to add resident", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                FirebaseDatabase.getInstance().getReference().child("users")
+                                                        .child(key)
+                                                        .child("mess_name").setValue(messKey).addOnCompleteListener(task -> {
+                                                            if (task.isSuccessful()) {
+                                                                //Setting isResident to true
+                                                                {
+                                                                    FirebaseDatabase.getInstance().getReference().child("users")
+                                                                            .child(key)
+                                                                            .child("is_resident").setValue(true).addOnCompleteListener(task1 -> {
+                                                                                if (task1.isSuccessful()) {
+                                                                                    Toast.makeText(RentMessDetailsActivity.this, "User details updated", Toast.LENGTH_SHORT).show();
+                                                                                } else {
+                                                                                    Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            });
+                                                                }
+                                                            } else {
+                                                                Toast.makeText(RentMessDetailsActivity.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                                // reducing available seats by one
+                                                {
+                                                    messRef = FirebaseDatabase.getInstance().getReference()
+                                                            .child("Messes")
+                                                            .child(messKey);
+                                                    messRef.child("available_seats").setValue(availableSeats[0] - 1);
+                                                }
+
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(RentMessDetailsActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // Handle possible errors
+                                    Toast.makeText(RentMessDetailsActivity.this, "DatabaseError: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Handle possible errors
-                            Toast.makeText(RentMessDetailsActivity.this, "DatabaseError: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(RentMessDetailsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
-
-
-                }
-                else {
+                } else {
                     Toast.makeText(RentMessDetailsActivity.this, "Please enter resident email", Toast.LENGTH_SHORT).show();
                 }
 
@@ -265,6 +266,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         });
 
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(RentMessDetailsActivity.this, HomeActivity.class);
@@ -274,6 +276,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void loadFragment() {
 
         RecyclerView recyclerView = findViewById(R.id.rentResidentListRecyclerView);
@@ -295,12 +298,14 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             public void onRemoveButtonClick(UserDetailsModel item) {
 
             }
-        }, residentList);
+        }, residentList, totalRentAmountTextView, collectedAmountTextView, messKey);
         recyclerView.setAdapter(residentListRecyclerAdapter);
         setTotalRentAmount();
-        fetchResidentKeys(messKey);
+        residentListRecyclerAdapter.updateList(messKey);
+        //fetchResidentKeys(messKey);
 
     }
+
     public void setTotalRentAmount() {
 
         final int[] totalResident = new int[1];
@@ -317,7 +322,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> residentKeys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if(!snapshot.getKey().equals("dummy@dummycom")) {
+                    if (!snapshot.getKey().equals("dummy@dummycom")) {
                         residentKeys.add(snapshot.getKey());
                     }
                 }
@@ -361,7 +366,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                         paidCounter++;
                                     }
                                 }
-                                collectedAmountTextView.setText(String.valueOf((paidCounter*rentPerSeat[0])) + " BDT");
+                                collectedAmountTextView.setText(String.valueOf((paidCounter * rentPerSeat[0])) + " BDT");
                             }
 
                             @Override
@@ -383,9 +388,8 @@ public class RentMessDetailsActivity extends AppCompatActivity {
         });
 
 
-
-
     }
+
     public void fetchResidentKeys(String messKey) {
         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                 .child("Messes")
@@ -397,7 +401,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> residentKeys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if(!snapshot.getKey().equals("dummy@dummycom")) {
+                    if (!snapshot.getKey().equals("dummy@dummycom")) {
                         residentKeys.add(snapshot.getKey());
                     }
                 }
@@ -410,6 +414,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
     public void fetchUserDetails(List<String> residentKeys) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
@@ -420,10 +425,12 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         UserDetailsModel user = snapshot.getValue(UserDetailsModel.class);
                         if (user != null) {
-                            residentListRecyclerAdapter.updateList(user);
+                            //residentListRecyclerAdapter.updateList(user);
+                            residentListRecyclerAdapter.updateList(messKey);
                         }
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();

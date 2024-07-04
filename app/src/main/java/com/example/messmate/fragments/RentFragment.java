@@ -196,10 +196,8 @@ public class RentFragment extends Fragment {
 
             @Override
             public void onItemClick(MessDetailsModel item) {
-                String key = item.mess_name.toLowerCase() + "_" + item.mess_address.toLowerCase();
-                String message = "Key " + key.replace(" ","");
                 Intent intent = new Intent(getActivity(), RentMessDetailsActivity.class);
-                intent.putExtra("messKey", key.replace(" ",""));
+                intent.putExtra("messKey", item.mess_key);
                 intent.putExtra("messName", item.mess_name);
                 startActivity(intent);
             }
