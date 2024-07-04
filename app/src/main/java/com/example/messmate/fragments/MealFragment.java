@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
@@ -49,6 +50,11 @@ public class MealFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
+                            boolean isResident = snapshot.child("is_resident").getValue(Boolean.class);
+                            if(isResident == false) {
+                                Toast.makeText(requireContext(), "You are not a resident of a mess", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             messKey[0] = snapshot.child("mess_name").getValue(String.class);
                             Intent intent = new Intent(getActivity(), MealRequestActivity.class);
                             intent.putExtra("messKey", messKey[0]);

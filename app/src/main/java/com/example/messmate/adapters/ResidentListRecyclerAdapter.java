@@ -1,10 +1,9 @@
 package com.example.messmate.adapters;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,14 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
-import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.models.UserDetailsModel;
-import com.example.messmate.screens.RegisterActivity;
-import com.example.messmate.screens.RentMessDetailsActivity;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,14 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentListRecyclerAdapter.ViewHolder> {
     Context context;
+    String messKey;
     List<UserDetailsModel> residentList;
     private final ResidentListRecyclerAdapter.OnItemClickListener listener;
+    TextView totalRentAmountTextView, collectedAmountTextView;
 
     public interface OnItemClickListener {
         void onPaidButtonClick(UserDetailsModel item);
@@ -51,10 +43,16 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
     public ResidentListRecyclerAdapter(Context context,
                                        ResidentListRecyclerAdapter.OnItemClickListener listener,
-                                       List<UserDetailsModel> residentList) {
+                                       List<UserDetailsModel> residentList,
+                                       TextView totalRentAmountTextView,
+                                       TextView collectedAmountTextView,
+                                       String messKey) {
         this.context = context;
         this.listener = listener;
         this.residentList = residentList;
+        this.totalRentAmountTextView = totalRentAmountTextView;
+        this.collectedAmountTextView = collectedAmountTextView;
+        this.messKey = messKey;
     }
 
 
@@ -71,7 +69,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder,final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         UserDetailsModel resident = residentList.get(position);
         final Boolean[] isPaid = {false};
 
@@ -133,8 +131,8 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                                 .child(resident.getKey());
                         messesRef.child("rent").setValue(false).addOnCompleteListener(task -> {
                             if(task.isSuccessful()) {
-                                Toast.makeText(context, "Set to Unpaid", Toast.LENGTH_SHORT).show();
-                                resetActivity();
+                                setTotalRentAmount(messKey);
+                                //resetActivity();
                             }
                             else {
                                 Toast.makeText(context, "Failed to set to Unpaid", Toast.LENGTH_SHORT).show();
@@ -165,8 +163,8 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                                 .child(resident.getKey());
                         messesRef.child("rent").setValue(true).addOnCompleteListener(task -> {
                             if(task.isSuccessful()) {
-                                Toast.makeText(context, "Set to Paid", Toast.LENGTH_SHORT).show();
-                                resetActivity();
+                                setTotalRentAmount(messKey);
+                                //resetActivity();
                             }
                             else {
                                 Toast.makeText(context, "Failed to set to Paid", Toast.LENGTH_SHORT).show();
@@ -184,8 +182,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
             }
         });
-
-
         holder.residentName.setText(resident.getUsername());
         holder.residentEmail.setText("Email: " + resident.getEmail());
         holder.residentPhone.setText("Phone: " + resident.getPhone());
@@ -208,7 +204,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                             .child(resident.getKey()).removeValue().addOnCompleteListener(task1 -> {
                         if(task1.isSuccessful()) {
                             Toast.makeText(context, "Resident removed successfully", Toast.LENGTH_SHORT).show();
-
+                            updateList(resident.getMess_name());
                         }
                         else {
                             Toast.makeText(context, "Failed to remove resident", Toast.LENGTH_SHORT).show();
@@ -226,18 +222,18 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                                                     .child("is_resident").setValue(false).addOnCompleteListener(task1 -> {
                                                         if (task1.isSuccessful()) {
                                                             Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
-                                                            if (context instanceof Activity) {
-                                                                resetActivity();
-                                                            }
+                                                            setTotalRentAmount(messKey);
+//                                                            if (context instanceof Activity) {
+//                                                                resetActivity();
+//                                                            }
                                                         } else {
                                                             Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
                                         }
-
-                                        if (context instanceof Activity) {
-                                            resetActivity();
-                                        }
+//                                        if (context instanceof Activity) {
+//                                            resetActivity();
+//                                        }
                                     } else {
                                         Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                     }
@@ -304,20 +300,145 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
     }
 
-    public void resetActivity() {
-        Activity activity = (Activity) context;
-        Intent intent = activity.getIntent();
-        activity.finish();
-        activity.startActivity(intent);
+    public void setTotalRentAmount(String messKey) {
+        final int[] totalResident = new int[1];
+        final Integer[] rentPerSeat = {0};
+
+        // Total residents query
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                .child("Messes")
+                .child(messKey)
+                .child("residents");
+
+        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> residentKeys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (!snapshot.getKey().equals("dummy@dummycom")) {
+                        residentKeys.add(snapshot.getKey());
+                    }
+                }
+                totalResident[0] = residentKeys.size();
+                Log.d("TOTAL_RESIDENTS", "TOTAL_RESIDENTS" + totalResident[0]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Initial Total Rent amount query
+        messesRef = FirebaseDatabase.getInstance().getReference().child("Messes").child(messKey);
+        messesRef.child("rent_per_seat").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    rentPerSeat[0] = dataSnapshot.getValue(Integer.class);
+                    Log.d("FETCH_RENT", "Rent per seat: " + rentPerSeat[0]);
+                    String amount = String.valueOf(rentPerSeat[0] * totalResident[0]);
+                    totalRentAmountTextView.setText(amount + " BDT");
+
+                    // Initial Paid Amount state query
+                    {
+
+                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Messes")
+                                .child(messKey)
+                                .child("residents");
+                        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int paidCounter = 0;
+                                System.out.println(dataSnapshot.hasChildren());
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Boolean rent = snapshot.child("rent").getValue(Boolean.class);
+                                    if (rent != null && rent) {
+                                        paidCounter++;
+                                    }
+                                }
+                                collectedAmountTextView.setText(String.valueOf((paidCounter * rentPerSeat[0])) + " BDT");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                } else {
+                    Log.d("FETCH_RENT", "Rent per seat does not exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FETCH_RENT", "DatabaseError: " + databaseError.getMessage());
+            }
+        });
+
+
     }
+
 
     @Override
     public int getItemCount() {
         return residentList.size();
     }
-    public void updateList(UserDetailsModel newUser) {
-        residentList.add(newUser);
-        notifyDataSetChanged();
+    public void updateList(String messKey) {
+        residentList.clear();
+        fetchResidentKeys(messKey);
+    }
+
+    public void fetchResidentKeys(String messKey) {
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                .child("Messes")
+                .child(messKey)
+                .child("residents");
+
+        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> residentKeys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (!snapshot.getKey().equals("dummy@dummycom")) {
+                        residentKeys.add(snapshot.getKey());
+                    }
+                }
+                fetchUserDetails(residentKeys);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void fetchUserDetails(List<String> residentKeys) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        for (String key : residentKeys) {
+            usersRef.orderByChild("key").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserDetailsModel user = snapshot.getValue(UserDetailsModel.class);
+                        if (user != null) {
+                            residentList.add(user);
+                        }
+                    }
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
 
