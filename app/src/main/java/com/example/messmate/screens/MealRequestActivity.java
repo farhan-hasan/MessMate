@@ -29,9 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MealRequestActivity extends AppCompatActivity {
-    String messKey;
+    String messKey, messName;
     TextView breakfastmenuitemTextView, breakfastprice, lunchmenuitemTextView,lunchprice;
     TextView dinnermenuitemTextView, dinnerprice;
+    TextView mealRequestMessName;
     Button buttonforbreakfast, buttonforlunch, buttonfordinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,12 @@ public class MealRequestActivity extends AppCompatActivity {
         buttonforbreakfast = findViewById(R.id.buttonforbreakfast);
         buttonforlunch = findViewById(R.id.buttonforlunch);
         buttonfordinner = findViewById(R.id.buttonfordinner);
+        mealRequestMessName = findViewById(R.id.mealRequestMessName);
 
         messKey = getIntent().getStringExtra("messKey");
+        messName = getIntent().getStringExtra("messName");
 
+        mealRequestMessName.setText(messName);
         Toolbar toolbar = findViewById(R.id.mealRequestToolbar);
         setSupportActionBar(toolbar);
 

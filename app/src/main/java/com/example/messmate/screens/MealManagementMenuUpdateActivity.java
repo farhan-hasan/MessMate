@@ -43,6 +43,7 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
     EditText lunchPriceEditText, dinnerMenuEditText, dinnerPriceEditText;
     Button breakfastSaveButton, lunchSaveButton, dinnerSaveButton, mealCloseButton;
     TextView breakfastAmountTextView, lunchAmountTextView, dinnerAmountTextView;
+    TextView menuUpdateMessName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,12 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
         lunchAmountTextView = findViewById(R.id.lunchAmountTextView);
         dinnerAmountTextView = findViewById(R.id.dinnerAmountTextView);
         mealCloseButton = findViewById(R.id.mealCloseButton);
+        menuUpdateMessName = findViewById(R.id.menuUpdateMessName);
 
-        Toolbar toolbar = findViewById(R.id.mealRequestToolbar);
+
+        menuUpdateMessName.setText(messName);
+
+        Toolbar toolbar = findViewById(R.id.menuUpdateToolbar);
         setSupportActionBar(toolbar);
 
         // Enable the back button

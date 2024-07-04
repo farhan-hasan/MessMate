@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical"
     tools:context=".screens.MealRequestActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/mealRequestToolbar"
+        android:id="@+id/menuUpdateToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary_color"
@@ -18,13 +19,35 @@
         app:titleTextAppearance="@style/CustomToolbarTitle"
         app:titleTextColor="#FFF" />
 
+    <RelativeLayout
+        android:layout_below="@+id/menuUpdateToolbar"
+        android:id="@+id/menuUpdateMessNameRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:background="@color/bg_color"
+        android:paddingRight="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/menuUpdateMessName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/primary_color"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="32dp"
+            />
+
+    </RelativeLayout>
+
 
     <ScrollView
         android:layout_above="@+id/menuUpdateCard"
         android:id="@+id/mealRequestScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mealRequestToolbar"
+        android:layout_below="@+id/menuUpdateMessNameRelativeLayout"
         android:layout_marginTop="0dp"
         android:background="@color/bg_color"
         tools:ignore="UnknownId">
@@ -53,7 +76,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="16dp"
-
                     >
 
 

@@ -61,12 +61,10 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull MessDetailsModel model) {
-        String key = model.mess_name + "_" + model.mess_address;
-        key = key.replace(" ", "");
         holder.messName.setText(model.mess_name);
-        holder.messAddress.setText(model.mess_address);
-        holder.adminPhone.setText(model.admin_phone);
-        holder.availableSeats.setText(String.valueOf(model.available_seats));
+        holder.messAddress.setText("Address: " + model.mess_address);
+        holder.adminPhone.setText("Admin phone: " + model.admin_phone);
+        holder.availableSeats.setText("Available seats: " + String.valueOf(model.available_seats));
         holder.itemView.setPadding(0, 0, 0, 0);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +73,7 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
             }
         });
 
-        String messKey = key.toLowerCase();
+        String messKey = model.mess_key;
         holder.messRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

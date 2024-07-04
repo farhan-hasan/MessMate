@@ -18,7 +18,9 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         // Handler to start the main activity after the duration
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }, 1500);
 
     }
