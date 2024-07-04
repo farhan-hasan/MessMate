@@ -13,14 +13,14 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="My Profile"
-            android:textColor="@color/primary_color"
-            android:textSize="32dp" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:fontFamily="@font/roboto_bold"-->
+<!--            android:text="My Profile"-->
+<!--            android:textColor="@color/primary_color"-->
+<!--            android:textSize="32dp" />-->
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -31,6 +31,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/profileImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/residentpersonsvg"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    />
 
                 <EditText
                     android:id="@+id/nameEditText"
@@ -61,6 +74,22 @@
                     android:padding="10dp"
                     android:textColor="@color/primary_color"
                     android:textColorHint="@color/primary_color" />
+
+                <EditText
+                    android:enabled="false"
+                    android:id="@+id/profileEmailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/text_field_border"
+                    android:drawableLeft="@drawable/emailsvg"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Phone"
+                    android:inputType="none"
+                    android:padding="10dp"
+                    android:textColor="#808080"
+                    android:textColorHint="#808080" />
 
                 <EditText
                     android:id="@+id/oldPasswordEditText"
