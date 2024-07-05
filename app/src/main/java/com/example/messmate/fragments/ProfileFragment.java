@@ -2,6 +2,7 @@ package com.example.messmate.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -15,9 +16,12 @@ import android.widget.Toast;
 
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.*;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,11 +53,37 @@ public class ProfileFragment extends Fragment {
 
         nameEditText = view.findViewById(R.id.nameEditText);
         phoneEditText = view.findViewById(R.id.phoneEditText);
+        emailEditText = view.findViewById(R.id.profileEmailEditText);
         oldPasswordEditText = view.findViewById(R.id.oldPasswordEditText);
         newPasswordEditText = view.findViewById(R.id.newPasswordEditText);
         confirmNewPasswordEditText = view.findViewById(R.id.NewconfirmPasswordEditText);
         saveButton = view.findViewById(R.id.profileSaveButton);
         updatePassButton = view.findViewById(R.id.profileUpdatePassButton);
+
+        {
+            userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(Constants.userKey);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String name = "", phone = "", email = "";
+                    if(snapshot.exists()) {
+                        name = snapshot.child("username").getValue(String.class);
+                        phone = snapshot.child("phone").getValue(String.class);
+                        email = snapshot.child("email").getValue(String.class);
+                    }
+                    nameEditText.setText(name);
+                    phoneEditText.setText(phone);
+                    emailEditText.setText(email + " *");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
         updatePassButton.setOnClickListener(new View.OnClickListener() {
             @Override

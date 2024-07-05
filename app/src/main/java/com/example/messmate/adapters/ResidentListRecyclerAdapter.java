@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
 import com.example.messmate.models.UserDetailsModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -210,35 +214,62 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                             Toast.makeText(context, "Failed to remove resident", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    // Setting isResident to false
+
+                    // updating user details
                     {
+
+                        Map<String, Object> updateData = new HashMap<>();
+                        updateData.put("mess_name", "");
+                        updateData.put("is_resident", false);
+                        updateData.put("breakfast_amount", 0);
+                        updateData.put("lunch_amount", 0);
+                        updateData.put("dinner_amount", 0);
+                        updateData.put("meal_amount", 0);
                         FirebaseDatabase.getInstance().getReference().child("users")
                                 .child(resident.getKey())
-                                .child("mess_name").setValue("").addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        {
-                                            FirebaseDatabase.getInstance().getReference().child("users")
-                                                    .child(resident.getKey())
-                                                    .child("is_resident").setValue(false).addOnCompleteListener(task1 -> {
-                                                        if (task1.isSuccessful()) {
-                                                            Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
-                                                            setTotalRentAmount(messKey);
-//                                                            if (context instanceof Activity) {
-//                                                                resetActivity();
-//                                                            }
-                                                        } else {
-                                                            Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
+                                .updateChildren(updateData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+                                            setTotalRentAmount(messKey);
+                                        } else {
+                                            Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                         }
-//                                        if (context instanceof Activity) {
-//                                            resetActivity();
-//                                        }
-                                    } else {
-                                        Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
+
+
+                    // Setting isResident to false
+//                    {
+//                        FirebaseDatabase.getInstance().getReference().child("users")
+//                                .child(resident.getKey())
+//                                .child("mess_name").setValue("").addOnCompleteListener(task -> {
+//                                    if (task.isSuccessful()) {
+//                                        {
+//                                            FirebaseDatabase.getInstance().getReference().child("users")
+//                                                    .child(resident.getKey())
+//                                                    .child("is_resident").setValue(false).addOnCompleteListener(task1 -> {
+//                                                        if (task1.isSuccessful()) {
+//                                                            Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
+//                                                            setTotalRentAmount(messKey);
+////                                                            if (context instanceof Activity) {
+////                                                                resetActivity();
+////                                                            }
+//                                                        } else {
+//                                                            Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
+//                                                        }
+//                                                    });
+//                                        }
+////                                        if (context instanceof Activity) {
+////                                            resetActivity();
+////                                        }
+//                                    } else {
+//                                        Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                    }
                     // Fetching number of seats
                     {
                         DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()

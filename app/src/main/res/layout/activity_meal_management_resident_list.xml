@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".screens.MealRequestActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/rentMessDetailsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:elevation="4dp"
+        android:popupTheme="@style/ThemeOverlay.AppCompat"
+        android:theme="@style/CustomToolbarTheme"
+        app:title="MessMate"
+        app:titleTextAppearance="@style/CustomToolbarTitle"
+        app:titleTextColor="#FFF" />
+
+    <RelativeLayout
+        android:layout_below="@+id/rentMessDetailsToolbar"
+        android:id="@+id/rentMessDetailsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color"
+        android:orientation="vertical"
+        android:layout_above="@+id/menuUpdateCard"
+        >
+
+        <RelativeLayout
+            android:id="@+id/mealManagementMessNameRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/mealManagementMessDetailsMessName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mess Name"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="32dp"
+                />
+
+            <Button
+                style="?android:attr/absListViewStyle"
+                android:id="@+id/menuUpdateButton"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/primary_color"
+                android:layout_width="wrap_content"
+                android:textColor="#FFF"
+                android:layout_height="50dp"
+                android:text="Menu update" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/mealManagementMessNameRelativeLayout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:id="@+id/mealManagementMessDetailsRecyclerView"/>
+
+
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/menuUpdateCard"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:backgroundTint="#FFF">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            >
+
+            <TextView
+                android:id="@+id/totalRequestTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Meal Request"
+                android:textColor="@color/primary_color"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalRequestTextView"
+                >
+
+                <TextView
+                    android:id="@+id/breakfastMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Breakfast: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/breakfastAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/breakfastMealTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/lunchMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/breakfastMealTextView"
+                    android:text="Lunch: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/lunchAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/lunchMealTextView"
+                    android:layout_below="@+id/breakfastAmountTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/dinnerMealTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lunchMealTextView"
+                    android:text="Dinner: "
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/dinnerAmountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/lunchMealTextView"
+                    android:layout_below="@+id/lunchMealTextView"
+                    android:text="2"
+                    android:textColor="@color/primary_color"
+                    android:fontFamily="@font/roboto_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/mealCloseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Close"
+                    android:textColor="#FFF"
+                    android:textSize="14sp" />
+
+
+
+
+
+
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</RelativeLayout>
+
+
+

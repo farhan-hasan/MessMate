@@ -58,7 +58,35 @@ public class MealFragment extends Fragment {
                             messKey[0] = snapshot.child("mess_name").getValue(String.class);
                             Intent intent = new Intent(getActivity(), MealRequestActivity.class);
                             intent.putExtra("messKey", messKey[0]);
-                            startActivity(intent);
+
+
+                            // Fetching mess name
+                            {
+                                DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("Messes")
+                                        .child(messKey[0]);
+
+                                messRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        String messName = "";
+                                        if(snapshot.exists()) {
+                                             messName = snapshot.child("mess_name").getValue(String.class);
+                                        }
+                                        intent.putExtra("messName", messName);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                            }
+
+
+
                         }
                     }
 
@@ -71,6 +99,9 @@ public class MealFragment extends Fragment {
 
             }
         });
+
+
+
 
         mealManagementCardView = view.findViewById(R.id.mealManagementCard);
         mealManagementCardView.setOnClickListener(new View.OnClickListener() {

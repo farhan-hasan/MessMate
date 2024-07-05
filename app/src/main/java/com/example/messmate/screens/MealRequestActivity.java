@@ -29,10 +29,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MealRequestActivity extends AppCompatActivity {
-    String messKey;
+    String messKey, messName;
     TextView breakfastmenuitemTextView, breakfastprice, lunchmenuitemTextView,lunchprice;
     TextView dinnermenuitemTextView, dinnerprice;
+    TextView mealRequestMessName;
     Button buttonforbreakfast, buttonforlunch, buttonfordinner;
+    int breakfastPrice, lunchPrice, dinnerPrice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +48,12 @@ public class MealRequestActivity extends AppCompatActivity {
         buttonforbreakfast = findViewById(R.id.buttonforbreakfast);
         buttonforlunch = findViewById(R.id.buttonforlunch);
         buttonfordinner = findViewById(R.id.buttonfordinner);
+        mealRequestMessName = findViewById(R.id.mealRequestMessName);
 
         messKey = getIntent().getStringExtra("messKey");
+        messName = getIntent().getStringExtra("messName");
 
+        mealRequestMessName.setText(messName);
         Toolbar toolbar = findViewById(R.id.mealRequestToolbar);
         setSupportActionBar(toolbar);
 
@@ -103,6 +108,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+
+                            // Meal amount decrement
+                            {
+                                // Fetch lunch_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int breakfastAmount = 0;
+                                        int mealAmount = 0;
+                                        if(snapshot.exists()) {
+                                            breakfastAmount = snapshot.child("breakfast_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Decrease lunch amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("breakfast_amount")
+                                                    ;
+                                            userRef.setValue(breakfastAmount - breakfastPrice);
+                                        }
+                                        // Decrease meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount - breakfastPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
                         }
                     });
                 } else {
@@ -133,6 +179,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
                                         Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            // Meal amount increment
+                            {
+                                // Fetch lunch_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int breakfastAmount = 0;
+                                        int mealAmount = 0;
+                                        if(snapshot.exists()) {
+                                            breakfastAmount = snapshot.child("breakfast_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Increase lunch amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("breakfast_amount")
+                                                    ;
+                                            userRef.setValue(breakfastAmount + breakfastPrice);
+                                        }
+                                        // Increase meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount + breakfastPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
                                     }
                                 });
                             }
@@ -185,6 +272,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+
+                            // Meal amount decrement
+                            {
+                                // Fetch dinner_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int dinnerAmount = 0;
+                                        int mealAmount  = 0;
+                                        if(snapshot.exists()) {
+                                            dinnerAmount = snapshot.child("dinner_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Decrease dinner amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("dinner_amount")
+                                                    ;
+                                            userRef.setValue(dinnerAmount - dinnerPrice);
+                                        }
+                                        // Decrease meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount - dinnerPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
                         }
                     });;
                 } else {
@@ -215,6 +343,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
                                         Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            // Meal amount increment
+                            {
+                                // Fetch dinner_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int dinnerAmount = 0;
+                                        int mealAmount = 0;
+                                        if(snapshot.exists()) {
+                                            dinnerAmount = snapshot.child("dinner_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Increase Dinner amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("dinner_amount")
+                                                    ;
+                                            userRef.setValue(dinnerAmount + dinnerPrice);
+                                        }
+                                        // Increase meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount + dinnerPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
                                     }
                                 });
                             }
@@ -267,6 +436,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+
+                            // Meal amount decrement
+                            {
+                                // Fetch lunch_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int lunchAmount = 0;
+                                        int mealAmount = 0;
+                                        if(snapshot.exists()) {
+                                            lunchAmount = snapshot.child("lunch_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Decrease lunch amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("lunch_amount")
+                                                    ;
+                                            userRef.setValue(lunchAmount - lunchPrice);
+                                        }
+                                        // Decrease meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount - lunchPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
                         }
                     });
                 } else {
@@ -297,6 +507,47 @@ public class MealRequestActivity extends AppCompatActivity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
                                         Toast.makeText(MealRequestActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            // Meal amount increment
+                            {
+                                // Fetch lunch_amount
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(Constants.userKey);
+
+                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int lunchAmount = 0;
+                                        int mealAmount = 0;
+                                        if(snapshot.exists()) {
+                                            lunchAmount = snapshot.child("lunch_amount").getValue(Integer.class);
+                                            mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
+                                        }
+                                        // Increase lunch amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("lunch_amount")
+                                                    ;
+                                            userRef.setValue(lunchAmount + lunchPrice);
+                                        }
+                                        // Decrease meal amount
+                                        {
+                                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(Constants.userKey)
+                                                    .child("meal_amount")
+                                                    ;
+                                            userRef.setValue(mealAmount + lunchPrice);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
                                     }
                                 });
                             }
@@ -368,6 +619,7 @@ public class MealRequestActivity extends AppCompatActivity {
                     if(snapshot.exists()) {
                         menu = snapshot.child("menu").getValue(String.class);
                         price = snapshot.child("price").getValue(Integer.class);
+                        breakfastPrice = price;
                     }
                     breakfastmenuitemTextView.setText("Menu: " + menu);
                     breakfastprice.setText(String.valueOf("Price: " + price));
@@ -391,6 +643,7 @@ public class MealRequestActivity extends AppCompatActivity {
                     if(snapshot.exists()) {
                         menu = snapshot.child("menu").getValue(String.class);
                         price = snapshot.child("price").getValue(Integer.class);
+                        lunchPrice = price;
                     }
                     lunchmenuitemTextView.setText("Menu: " + menu);
                     lunchprice.setText(String.valueOf("Price: " + price));
@@ -414,6 +667,7 @@ public class MealRequestActivity extends AppCompatActivity {
                     if(snapshot.exists()) {
                         menu = snapshot.child("menu").getValue(String.class);
                         price = snapshot.child("price").getValue(Integer.class);
+                        dinnerPrice = price;
                     }
                     dinnermenuitemTextView.setText("Menu: " + menu);
                     dinnerprice.setText(String.valueOf("Price: " + price));

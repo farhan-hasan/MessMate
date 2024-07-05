@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.messmate.R;
+import com.example.messmate.adapters.MealManagementMessListRecyclerAdapter;
 import com.example.messmate.adapters.MessListRecyclerAdapter;
 import com.example.messmate.adapters.WrapContentLinearLayoutManager;
 import com.example.messmate.models.Constants;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class MealManagementActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private MessListRecyclerAdapter messListRecyclerAdapter;
+    private MealManagementMessListRecyclerAdapter mealManagementMessListRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +67,33 @@ public class MealManagementActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<MessDetailsModel> options =
                 new FirebaseRecyclerOptions.Builder<MessDetailsModel>()
                         .setQuery(query, MessDetailsModel.class).build();
-        messListRecyclerAdapter = new MessListRecyclerAdapter(MealManagementActivity.this, new MessListRecyclerAdapter.OnItemClickListener() {
+        mealManagementMessListRecyclerAdapter = new MealManagementMessListRecyclerAdapter(MealManagementActivity.this, new MealManagementMessListRecyclerAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(MessDetailsModel item) {
                 String key = item.mess_name.toLowerCase() + "_" + item.mess_address.toLowerCase();
                 String message = "Key " + key.replace(" ","");
-                Intent intent = new Intent(MealManagementActivity.this, MealManagementMenuUpdateActivity.class);
+                Intent intent = new Intent(MealManagementActivity.this, MealManagementResidentListActivity.class);
                 intent.putExtra("messKey", item.mess_key);
                 intent.putExtra("messName", item.mess_name);
                 startActivity(intent);
             }
         }, options);
-        recyclerView.setAdapter(messListRecyclerAdapter);
+        recyclerView.setAdapter(mealManagementMessListRecyclerAdapter);
     }
 
     public void onStart() {
         super.onStart();
-        if (messListRecyclerAdapter != null) {
-            messListRecyclerAdapter.startListening();
+        if (mealManagementMessListRecyclerAdapter != null) {
+            mealManagementMessListRecyclerAdapter.startListening();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (messListRecyclerAdapter != null) {
-            messListRecyclerAdapter.stopListening();
+        if (mealManagementMessListRecyclerAdapter != null) {
+            mealManagementMessListRecyclerAdapter.stopListening();
         }
     }
 }
