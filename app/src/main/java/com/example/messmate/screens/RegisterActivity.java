@@ -114,6 +114,10 @@ public class RegisterActivity extends AppCompatActivity {
                             userData.put("key", key);
                             userData.put("mess_name", "");
                             userData.put("is_resident", false);
+                            userData.put("breakfast_amount", 0);
+                            userData.put("lunch_amount", 0);
+                            userData.put("dinner_amount", 0);
+                            userData.put("meal_amount", 0);
 
                             userRef.child("users").child(key).setValue(userData)
                                     .addOnCompleteListener(task1 -> {

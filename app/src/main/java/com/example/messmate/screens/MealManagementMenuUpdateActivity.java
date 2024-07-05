@@ -41,7 +41,7 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
     String messKey, messName;
     EditText breakfastMenuEditText, breakfastPriceEditText, lunchMenuEditText;
     EditText lunchPriceEditText, dinnerMenuEditText, dinnerPriceEditText;
-    Button breakfastSaveButton, lunchSaveButton, dinnerSaveButton, mealCloseButton;
+    Button breakfastSaveButton, lunchSaveButton, dinnerSaveButton;
     TextView breakfastAmountTextView, lunchAmountTextView, dinnerAmountTextView;
     TextView menuUpdateMessName;
 
@@ -60,10 +60,6 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
         breakfastSaveButton = findViewById(R.id.breakfastSaveButton);
         lunchSaveButton = findViewById(R.id.lunchSaveButton);
         dinnerSaveButton = findViewById(R.id.dinnerSaveButton);
-        breakfastAmountTextView = findViewById(R.id.breakfastAmountTextView);
-        lunchAmountTextView = findViewById(R.id.lunchAmountTextView);
-        dinnerAmountTextView = findViewById(R.id.dinnerAmountTextView);
-        mealCloseButton = findViewById(R.id.mealCloseButton);
         menuUpdateMessName = findViewById(R.id.menuUpdateMessName);
 
 
@@ -78,7 +74,6 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         initMenuDetails();
-        initMealRequest();
 
         breakfastSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,112 +195,8 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
 
             }
         });
-        mealCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MealManagementMenuUpdateActivity.this);
-                builder.setTitle("Are you sure?");
-                builder.setMessage("Are you sure you want to close meals for today?");
-
-                builder.setPositiveButton("Yes", (dialog, which) -> {
-                    DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                            .child("Messes")
-                            .child(messKey)
-                            .child("meal_request");
-                    Map<String, Object> resetData = new HashMap<>();
-                    resetData.put("breakfast", 0);
-                    resetData.put("lunch", 0);
-                    resetData.put("dinner", 0);
-                    messesRef.updateChildren(resetData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            breakfastAmountTextView.setText("0");
-                            lunchAmountTextView.setText("0");
-                            dinnerAmountTextView.setText("0");
-
-                            // set false to all meals for the residents
-                            {
-                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                                        .child("Messes")
-                                        .child(messKey)
-                                        .child("residents");
-                                messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        List<String> residentKeys = new ArrayList<>();
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            if(!snapshot.getKey().equals("dummy@dummycom")) {
-                                                residentKeys.add(snapshot.getKey());
-                                            }
-                                        }
-
-                                        {
-                                            Map<String, Object> resetData = new HashMap<>();
-                                            resetData.put("breakfast", false);
-                                            resetData.put("lunch", false);
-                                            resetData.put("dinner", false);
-                                            for(String key: residentKeys) {
-                                                DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                                                        .child("Messes")
-                                                        .child(messKey)
-                                                        .child("residents")
-                                                        .child(key);
-                                                messesRef.updateChildren(resetData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(MealManagementMenuUpdateActivity.this, "Meals closed successfully", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-
-                        }
-                    });
-                });
-
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                builder.show();
-            }
-        });
 
 
-    }
-
-    public void initMealRequest() {
-        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                .child("Messes")
-                .child(messKey)
-                .child("meal_request");
-        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int breakfast = snapshot.child("breakfast").getValue(Integer.class);
-                int lunch = snapshot.child("lunch").getValue(Integer.class);
-                int dinner = snapshot.child("dinner").getValue(Integer.class);
-
-                breakfastAmountTextView.setText(String.valueOf(breakfast));
-                lunchAmountTextView.setText(String.valueOf(lunch));
-                dinnerAmountTextView.setText(String.valueOf(dinner));
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MealManagementMenuUpdateActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void initMenuDetails() {
@@ -383,7 +274,9 @@ public class MealManagementMenuUpdateActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(MealManagementMenuUpdateActivity.this, MealManagementActivity.class);
+            Intent intent = new Intent(MealManagementMenuUpdateActivity.this, MealManagementResidentListActivity.class);
+            intent.putExtra("messKey", messKey);
+            intent.putExtra("messName", messName);
             startActivity(intent);
             onBackPressed();
             return true;

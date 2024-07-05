@@ -298,127 +298,125 @@
 
     </ScrollView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/menuUpdateCard"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:backgroundTint="#FFF">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/menuUpdateCard"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:elevation="10dp"-->
+<!--        android:backgroundTint="#FFF">-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            >
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="20dp"-->
+<!--            >-->
 
-            <TextView
-                android:id="@+id/totalRequestTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Meal Request"
-                android:textColor="@color/primary_color"
-                android:fontFamily="@font/roboto_bold"
-                android:layout_centerHorizontal="true"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
+<!--            <TextView-->
+<!--                android:id="@+id/totalRequestTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Total Meal Request"-->
+<!--                android:textColor="@color/primary_color"-->
+<!--                android:fontFamily="@font/roboto_bold"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"/>-->
 
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/totalRequestTextView"
-                >
+<!--            <RelativeLayout-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/totalRequestTextView"-->
+<!--                >-->
 
-                <TextView
-                    android:id="@+id/breakfastMealTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Breakfast: "
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/breakfastMealTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Breakfast: "-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <TextView
-                    android:id="@+id/breakfastAmountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/breakfastMealTextView"
-                    android:text="2"
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_light"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/breakfastAmountTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_toEndOf="@+id/breakfastMealTextView"-->
+<!--                    android:text="2"-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_light"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <TextView
-                    android:id="@+id/lunchMealTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/breakfastMealTextView"
-                    android:text="Lunch: "
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/lunchMealTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/breakfastMealTextView"-->
+<!--                    android:text="Lunch: "-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <TextView
-                    android:id="@+id/lunchAmountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/lunchMealTextView"
-                    android:layout_below="@+id/breakfastAmountTextView"
-                    android:text="2"
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_light"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/lunchAmountTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_toEndOf="@+id/lunchMealTextView"-->
+<!--                    android:layout_below="@+id/breakfastAmountTextView"-->
+<!--                    android:text="2"-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_light"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <TextView
-                    android:id="@+id/dinnerMealTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/lunchMealTextView"
-                    android:text="Dinner: "
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/dinnerMealTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/lunchMealTextView"-->
+<!--                    android:text="Dinner: "-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <TextView
-                    android:id="@+id/dinnerAmountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/lunchMealTextView"
-                    android:layout_below="@+id/lunchMealTextView"
-                    android:text="2"
-                    android:textColor="@color/primary_color"
-                    android:fontFamily="@font/roboto_light"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/dinnerAmountTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_toEndOf="@+id/lunchMealTextView"-->
+<!--                    android:layout_below="@+id/lunchMealTextView"-->
+<!--                    android:text="2"-->
+<!--                    android:textColor="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_light"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
 
-                <Button
-                    android:id="@+id/mealCloseButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:backgroundTint="@color/primary_color"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Close"
-                    android:textColor="#FFF"
-                    android:textSize="14sp" />
-
-
+<!--                <Button-->
+<!--                    android:id="@+id/mealCloseButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:layout_marginEnd="2dp"-->
+<!--                    android:backgroundTint="@color/primary_color"-->
+<!--                    android:fontFamily="@font/roboto_regular"-->
+<!--                    android:text="Close"-->
+<!--                    android:textColor="#FFF"-->
+<!--                    android:textSize="14sp" />-->
 
 
 
 
-            </RelativeLayout>
 
 
+<!--            </RelativeLayout>-->
 
 
 
@@ -426,9 +424,11 @@
 
 
 
-        </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+
+<!--        </RelativeLayout>-->
+
+<!--    </androidx.cardview.widget.CardView>-->
 
 </RelativeLayout>
 

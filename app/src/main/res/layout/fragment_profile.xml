@@ -85,7 +85,7 @@
                     android:drawableLeft="@drawable/emailsvg"
                     android:drawablePadding="10dp"
                     android:ems="10"
-                    android:hint="Phone"
+                    android:hint="Email"
                     android:inputType="none"
                     android:padding="10dp"
                     android:textColor="#808080"
