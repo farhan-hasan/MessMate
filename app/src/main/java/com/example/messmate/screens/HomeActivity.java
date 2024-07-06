@@ -112,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // Handle positive button click
                         // Do something and then dismiss the dialog
+                        dialog.dismiss();
                         progressDialog.show();
                         new Handler().postDelayed(new Runnable() {
                             @Override

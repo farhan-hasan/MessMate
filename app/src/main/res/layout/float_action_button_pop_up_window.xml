@@ -11,13 +11,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Custom Title"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto_bold"
         android:textAppearance="?attr/textAppearanceHeadline6"/>
 
     <TextView
         android:id="@+id/dialog_rent_message"
         android:layout_width="wrap_content"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:text=""
+        android:fontFamily="@font/roboto_regular"
         android:layout_marginTop="8dp"
         android:textAppearance="?attr/textAppearanceBody1"/>
 
@@ -26,8 +30,10 @@
         android:id="@+id/dialog_meal_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text=""
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
         android:textAppearance="?attr/textAppearanceBody1"/>
 
     <!-- Dialog buttons -->
@@ -35,7 +41,7 @@
         android:id="@+id/custom_positive_button_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_gravity="center"
         android:text="OK"
         android:backgroundTint="@color/primary_color"

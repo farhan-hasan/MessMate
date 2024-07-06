@@ -80,7 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="70dp"
                 android:layout_height="wrap_content"
-                android:text="Dont have an account?" />
+                android:textColor="#000"
+                android:text="Don't have an account?" />
 
             <Button
                 style="?android:attr/absListViewStyle"

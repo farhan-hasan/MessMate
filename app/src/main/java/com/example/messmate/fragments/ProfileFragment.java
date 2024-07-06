@@ -271,25 +271,18 @@ public class ProfileFragment extends Fragment {
                         }
                         total_meal.setText("Total Meal Cost: "+meal_amount[0]);
                         totat_rent.setText("Total Rent Cost: "+ rent_amount[0]);
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
-
         dialog.show();
 
     }
