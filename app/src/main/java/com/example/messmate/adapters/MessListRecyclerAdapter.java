@@ -3,6 +3,8 @@ package com.example.messmate.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
 import com.example.messmate.models.MessDetailsModel;
+import com.example.messmate.screens.HomeActivity;
+import com.example.messmate.screens.LoginActivity;
 import com.firebase.ui.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +59,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.mess_list_card, parent, false);
         return new ViewHolder(view);
     }
@@ -77,33 +81,97 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
         holder.messRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Are you sure?");
-                builder.setMessage("Do you want to remove this mess?");
 
-                builder.setPositiveButton("Yes", (dialog, which) -> {
-                    DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                            .child("Messes")
-                            .child(messKey);
 
-                    Log.d("MESS_KEY", messKey);
 
-                    messesRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                {
+                    //LayoutInflater inflater = getLayoutInflater();
+                    View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setView(dialogView);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(context, "Mess removed successfully", Toast.LENGTH_SHORT).show();
+                        public void onShow(DialogInterface dialogInterface) {
+
+                            TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+                            TextView dialogMessage = dialogView.findViewById(R.id.dialog_message);
+
+                            dialogTitle.setText("Are you sure?");
+                            dialogMessage.setText("Do you want to remove this mess?");
+
+                            // Set button click listeners
+                            Button negativeButton = dialogView.findViewById(R.id.custom_negative_button);
+                            Button positiveButton = dialogView.findViewById(R.id.custom_positive_button);
+
+                            negativeButton.setText("No");
+                            positiveButton.setText("Yes");
+
+                            negativeButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // Handle negative button clickToast.makeText(HomeActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            positiveButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // Handle positive button click
+                                    // Do something and then dismiss the dialog
+                                    DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                            .child("Messes")
+                                            .child(messKey);
+
+                                    Log.d("MESS_KEY", messKey);
+
+                                    messesRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(context, "Mess removed successfully", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
 
+                    dialog.show();
+                }
 
-                });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                builder.show();
+
+
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setTitle("Are you sure?");
+//                builder.setMessage("Do you want to remove this mess?");
+//
+//                builder.setPositiveButton("Yes", (dialog, which) -> {
+//                    DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+//                            .child("Messes")
+//                            .child(messKey);
+//
+//                    Log.d("MESS_KEY", messKey);
+//
+//                    messesRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Toast.makeText(context, "Mess removed successfully", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//
+//                });
+//
+//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                    }
+//                });
+//                builder.show();
             }
         });
         holder.messEditButton.setOnClickListener(new View.OnClickListener() {
