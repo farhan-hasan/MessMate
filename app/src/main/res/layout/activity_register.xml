@@ -101,7 +101,7 @@
             android:padding="10dp"
             android:drawablePadding="10dp"
             android:layout_marginTop="10dp"
-            android:inputType="textPassword" />
+            android:inputType="text" />
 
         <Button
             style="?android:attr/absListViewStyle"
@@ -124,6 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="70dp"
                 android:layout_height="wrap_content"
+                android:textColor="#000"
                 android:text="Already have an account?" />
 
             <Button
