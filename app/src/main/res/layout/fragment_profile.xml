@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +23,7 @@
 <!--            android:textColor="@color/primary_color"-->
 <!--            android:textSize="32dp" />-->
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bg_color">
@@ -158,12 +159,27 @@
                     android:text="Update Password"
                     android:textColor="#FFF" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/totalamountfloatbutton"
+                    style="?android:attr/absListViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:src="@drawable/cashsvg"
+                    android:scaleType="center"
+                    android:layout_margin="16dp"
+                    android:clickable="true"
+                    android:backgroundTint="@color/primary_color"
+                    />
+
             </LinearLayout>
 
         </ScrollView>
 
 
     </LinearLayout>
+
+
 
 
 </FrameLayout>
