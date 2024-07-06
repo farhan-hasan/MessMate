@@ -16,4 +16,18 @@
         <item name="backgroundTint">@color/primary_color</item>
     </style>
 
+    <!-- Custom AlertDialog style -->
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+<!--        <item name="android:background">@drawable/custom_alertdialog_background</item>-->
+        <item name="android:textColorPrimary">@color/primary_color</item>
+        <item name="android:textColorSecondary">@color/bg_color</item>
+<!--        <item name="android:buttonStyle">@style/CustomDialogButton</item>-->
+    </style>
+
+    <!-- Custom Button style -->
+<!--    <style name="CustomDialogButton">-->
+<!--        <item name="android:textColor">@color/primary_color</item>-->
+<!--        <item name="android:background">@drawable/custom_alertdialog_button_background</item>-->
+<!--    </style>-->
+
 </resources>

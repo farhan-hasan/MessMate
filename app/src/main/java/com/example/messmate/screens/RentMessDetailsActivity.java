@@ -12,10 +12,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,42 +93,105 @@ public class RentMessDetailsActivity extends AppCompatActivity {
     }
 
     public void closeCollection() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(RentMessDetailsActivity.this);
-        builder.setTitle("Are you sure?");
-        builder.setMessage("Do you want to close collection for this month?");
-
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-                    .child("Messes")
-                    .child(messKey)
-                    .child("residents");
-            messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    int paidCounter = 0;
-                    System.out.println(dataSnapshot.hasChildren());
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        snapshot.getRef().child("rent").setValue(false);
-                    }
-                    resetActivity();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setView(dialogView);
+//        builder.setTitle("Are you sure?");
+//        builder.setMessage("Do you want to close collection for this month?");
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(RentMessDetailsActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+            public void onShow(DialogInterface dialogInterface) {
+
+                TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+                TextView dialogMessage = dialogView.findViewById(R.id.dialog_message);
+
+                dialogTitle.setText("Are you sure?");
+                dialogMessage.setText("Do you want to close collection for this month?");
+
+                // Set button click listeners
+                Button negativeButton = dialogView.findViewById(R.id.custom_negative_button);
+                Button positiveButton = dialogView.findViewById(R.id.custom_positive_button);
+
+                negativeButton.setText("No");
+                positiveButton.setText("Yes");
+
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle negative button click
+                        Toast.makeText(RentMessDetailsActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle positive button click
+                        // Do something and then dismiss the dialog
+                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Messes")
+                                .child(messKey)
+                                .child("residents");
+                        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                int paidCounter = 0;
+                                System.out.println(dataSnapshot.hasChildren());
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    snapshot.getRef().child("rent").setValue(false);
+                                }
+                                setTotalRentAmount();
+                                residentListRecyclerAdapter.updateList(messKey);
+                                //resetActivity();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        dialog.dismiss();
+                    }
+                });
             }
         });
-        builder.show();
+
+//        builder.setPositiveButton("Yes", (dialogRef, which) -> {
+//            DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+//                    .child("Messes")
+//                    .child(messKey)
+//                    .child("residents");
+//            messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    int paidCounter = 0;
+//                    System.out.println(dataSnapshot.hasChildren());
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        snapshot.getRef().child("rent").setValue(false);
+//                    }
+//                    resetActivity();
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//
+//        });
+//
+//        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogRef, int which) {
+//                Toast.makeText(RentMessDetailsActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        dialog.show();
+        //builder.show();
     }
 
     public void addResident() {

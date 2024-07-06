@@ -14,9 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messmate.R;
@@ -71,36 +75,94 @@ public class HomeActivity extends AppCompatActivity {
 
     private void logOut() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure?");
-        builder.setMessage("Do you want to Log Out?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-        progressDialog.show();
-        // Use a Handler to delay the intent for 2 seconds
-        new Handler().postDelayed(new Runnable() {
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void run() {
-                // Dismiss the DialogPlus dialog
+            public void onShow(DialogInterface dialogInterface) {
 
-                FirebaseAuth.getInstance().signOut();
-                // Start the new activity
-                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                progressDialog.dismiss();
+                TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+                TextView dialogMessage = dialogView.findViewById(R.id.dialog_message);
 
+                dialogTitle.setText("Are you sure?");
+                dialogMessage.setText("Do you want to Logout?");
 
-                finish();
-            }
-        }, 1500);
-    });
+                // Set button click listeners
+                Button negativeButton = dialogView.findViewById(R.id.custom_negative_button);
+                Button positiveButton = dialogView.findViewById(R.id.custom_positive_button);
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                negativeButton.setText("No");
+                positiveButton.setText("Yes");
+
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle negative button clickToast.makeText(HomeActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Handle positive button click
+                        // Do something and then dismiss the dialog
+                        progressDialog.show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Dismiss the DialogPlus dialog
+
+                                FirebaseAuth.getInstance().signOut();
+                                // Start the new activity
+                                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                progressDialog.dismiss();
+                                finish();
+                            }
+                        }, 1500);
+                    }
+                });
             }
         });
-        builder.show();
+
+        dialog.show();
+
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Are you sure?");
+//        builder.setMessage("Do you want to Log Out?");
+//        builder.setPositiveButton("Yes", (dialog, which) -> {
+//        progressDialog.show();
+//        // Use a Handler to delay the intent for 2 seconds
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Dismiss the DialogPlus dialog
+//
+//                FirebaseAuth.getInstance().signOut();
+//                // Start the new activity
+//                Intent intent=new Intent(HomeActivity.this,LoginActivity.class) ;
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                progressDialog.dismiss();
+//                finish();
+//            }
+//        }, 1500);
+//    });
+//
+//        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//        builder.show();
 
     }
 
