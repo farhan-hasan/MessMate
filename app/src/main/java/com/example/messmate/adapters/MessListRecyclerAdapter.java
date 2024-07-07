@@ -33,6 +33,7 @@ import com.example.messmate.models.ImageSelectionListener;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.LoginActivity;
+import com.example.messmate.screens.RentMessDetailsActivity;
 import com.firebase.ui.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +50,9 @@ import com.google.firebase.storage.StorageReference;
 import com.orhanobut.dialogplus.DialogPlus;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -60,6 +63,7 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
     public interface OnItemClickListener {
         void onItemClick(MessDetailsModel item);
     }
+    List<String> residentKeys = new ArrayList<>();
 
     public MessListRecyclerAdapter(Context context,
                                    OnItemClickListener listener,
@@ -99,7 +103,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
 
 
                 {
-                    //LayoutInflater inflater = getLayoutInflater();
                     View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setView(dialogView);
@@ -125,7 +128,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
                             negativeButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // Handle negative button clickToast.makeText(HomeActivity.this, "Collection not closed", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                 }
                             });
@@ -133,13 +135,11 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
                             positiveButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // Handle positive button click
-                                    // Do something and then dismiss the dialog
+                                    resetUserDetails(messKey);
+
                                     DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                                             .child("Messes")
                                             .child(messKey);
-
-                                    Log.d("MESS_KEY", messKey);
 
                                     messesRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -155,37 +155,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
 
                     dialog.show();
                 }
-
-
-
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setTitle("Are you sure?");
-//                builder.setMessage("Do you want to remove this mess?");
-//
-//                builder.setPositiveButton("Yes", (dialog, which) -> {
-//                    DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-//                            .child("Messes")
-//                            .child(messKey);
-//
-//                    Log.d("MESS_KEY", messKey);
-//
-//                    messesRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            Toast.makeText(context, "Mess removed successfully", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//
-//
-//                });
-//
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                });
-//                builder.show();
             }
         });
         holder.messEditButton.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +182,55 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
 
         }).addOnFailureListener(exception -> {
             // Handle any errors
+        });
+    }
+
+    public void resetUserDetails(String messKey) {
+        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
+                .child("Messes")
+                .child(messKey)
+                .child("residents");
+
+        messesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> residentKeys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (!snapshot.getKey().equals("dummy@dummycom")) {
+                        residentKeys.add(snapshot.getKey());
+                    }
+                }
+
+                {
+                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+                    for (String key : residentKeys) {
+                        usersRef.orderByChild("key").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    snapshot.getRef().child("is_resident").setValue(false);
+                                    snapshot.getRef().child("mess_name").setValue("");
+                                    snapshot.getRef().child("breakfast_amount").setValue(0);
+                                    snapshot.getRef().child("lunch_amount").setValue(0);
+                                    snapshot.getRef().child("dinner_amount").setValue(0);
+                                    snapshot.getRef().child("meal_amount").setValue(0);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

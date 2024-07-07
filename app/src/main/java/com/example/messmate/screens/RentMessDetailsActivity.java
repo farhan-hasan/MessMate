@@ -232,8 +232,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Handle positive button click
-                        // Do something and then dismiss the dialog
+                        List<String> residentKeys = new ArrayList<>();
                         DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
                                 .child("Messes")
                                 .child(messKey)
@@ -242,9 +241,33 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 int paidCounter = 0;
-                                System.out.println(dataSnapshot.hasChildren());
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                     snapshot.getRef().child("rent").setValue(false);
+                                    if (!snapshot.getKey().equals("dummy@dummycom")) {
+                                        residentKeys.add(snapshot.getKey());
+                                    }
+                                }
+                                // setting meal_amount of all residents to 0
+                                {
+                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+                                    for (String key : residentKeys) {
+                                        usersRef.orderByChild("key").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                    snapshot.getRef().child("breakfast_amount").setValue(0);
+                                                    snapshot.getRef().child("lunch_amount").setValue(0);
+                                                    snapshot.getRef().child("dinner_amount").setValue(0);
+                                                    snapshot.getRef().child("meal_amount").setValue(0);
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Toast.makeText(RentMessDetailsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
                                 }
                                 setTotalRentAmount();
                                 residentListRecyclerAdapter.updateList(messKey);

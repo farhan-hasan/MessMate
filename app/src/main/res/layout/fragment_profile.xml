@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="16dp"
     tools:context=".fragments.RentFragment">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:fontFamily="@font/roboto_bold"-->
-<!--            android:text="My Profile"-->
-<!--            android:textColor="@color/primary_color"-->
-<!--            android:textSize="32dp" />-->
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:fontFamily="@font/roboto_bold"-->
+        <!--            android:text="My Profile"-->
+        <!--            android:textColor="@color/primary_color"-->
+        <!--            android:textSize="32dp" />-->
 
         <ScrollView
             android:layout_width="match_parent"
@@ -43,7 +44,6 @@
                     android:src="@drawable/residentpersonsvg"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
                     />
 
                 <EditText
@@ -159,26 +159,27 @@
                     android:text="Update Password"
                     android:textColor="#FFF" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/totalamountfloatbutton"
-                    style="?android:attr/absListViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:src="@drawable/cashsvg"
-                    android:scaleType="center"
-                    android:clickable="true"
-                    android:layout_marginTop="10dp"
-                    app:tint="#FFF"
-                    android:backgroundTint="@color/primary_color"
-                    />
 
             </LinearLayout>
 
         </ScrollView>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/totalamountfloatbutton"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cashsvg"
+            android:scaleType="center"
+            android:clickable="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            app:tint="#FFF"
+            android:backgroundTint="@color/primary_color"
+            />
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 
 
