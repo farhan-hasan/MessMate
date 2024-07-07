@@ -34,8 +34,8 @@
 
                 >
 
-                <ImageView
-                    android:id="@+id/messImage"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/rentMessImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="30dp"
@@ -52,8 +52,8 @@
                     android:textColor="@color/primary_color"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_toEndOf="@id/messImage"
-                    android:layout_alignTop="@id/messImage"
+                    android:layout_toEndOf="@id/rentMessImage"
+                    android:layout_alignTop="@id/rentMessImage"
                     android:layout_marginBottom="4dp" />
 
                 <TextView
@@ -63,7 +63,7 @@
                     android:text="Sylhet"
                     android:textColor="@color/primary_color"
                     android:textSize="14sp"
-                    android:layout_toEndOf="@id/messImage"
+                    android:layout_toEndOf="@id/rentMessImage"
                     android:layout_below="@id/messNameTextView"
                     android:layout_alignStart="@id/messNameTextView" />
 
@@ -74,7 +74,7 @@
                     android:text="10"
                     android:textColor="@color/primary_color"
                     android:textSize="14sp"
-                    android:layout_toEndOf="@id/messImage"
+                    android:layout_toEndOf="@id/rentMessImage"
                     android:layout_below="@id/messAddressTextView"
                     android:layout_alignStart="@id/messNameTextView" />
 
@@ -85,7 +85,7 @@
                     android:text="+8801712334556"
                     android:textColor="@color/primary_color"
                     android:textSize="14sp"
-                    android:layout_toEndOf="@id/messImage"
+                    android:layout_toEndOf="@id/rentMessImage"
                     android:layout_below="@id/availableSeatsTextView"
                     android:layout_alignStart="@id/messNameTextView" />
 

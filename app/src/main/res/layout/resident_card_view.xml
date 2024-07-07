@@ -29,15 +29,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/residentImage"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/residentRentImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:elevation="30dp"
-                    android:src="@drawable/residentpersonsvg"
                     android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="16dp"
+                    android:elevation="30dp"
+                    android:src="@drawable/residentpersonsvg" />
 
                 <TextView
                     android:layout_marginTop="1dp"
@@ -47,8 +47,8 @@
                     android:text="Resident Name"
                     android:textColor="@color/primary_color"
                     android:fontFamily="@font/roboto_bold"
-                    android:layout_toEndOf="@id/residentImage"
-                    android:layout_alignTop="@id/residentImage"
+                    android:layout_toEndOf="@id/residentRentImage"
+                    android:layout_alignTop="@id/residentRentImage"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="4dp" />

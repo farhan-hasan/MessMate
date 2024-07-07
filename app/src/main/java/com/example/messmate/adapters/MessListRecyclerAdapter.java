@@ -1,10 +1,16 @@
 package com.example.messmate.adapters;
 
+import static android.app.Activity.RESULT_OK;
+import static android.app.PendingIntent.getActivity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
+import com.example.messmate.models.ImageSelectionListener;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.LoginActivity;
@@ -34,15 +44,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.orhanobut.dialogplus.DialogPlus;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetailsModel, MessListRecyclerAdapter.ViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetailsModel, MessListRecyclerAdapter.ViewHolder>{
     Context context;
     private final OnItemClickListener listener;
-
     public interface OnItemClickListener {
         void onItemClick(MessDetailsModel item);
     }
@@ -181,6 +195,25 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
             }
         });
 
+        loadProfileImage(model.mess_key, holder);
+
+    }
+
+    private void loadProfileImage(String messKey,@NonNull ViewHolder holder) {
+
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("mess_images/" + messKey + ".jpg");
+
+        // Fetch the download URL
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+            // Use Glide to load the image into the ImageView
+            Glide.with(context)
+                    .load(uri)
+                    .into(holder.rentMessImage);
+
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+        });
     }
 
     public void editMess(String messKey, ViewHolder holder, MessDetailsModel model) {
@@ -337,6 +370,7 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView messName, messAddress, adminPhone, availableSeats;
         Button messEditButton, messRemoveButton;
+        CircleImageView rentMessImage;
 
         public CardView cardView;
 
@@ -349,7 +383,7 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
             cardView = itemView.findViewById(R.id.mess_list_card_view);
             messEditButton = itemView.findViewById(R.id.messEditButton);
             messRemoveButton = itemView.findViewById(R.id.messRemoveButton);
-
+            rentMessImage = itemView.findViewById(R.id.rentMessImage);
         }
     }
 }

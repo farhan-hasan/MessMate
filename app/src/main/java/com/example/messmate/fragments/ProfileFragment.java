@@ -1,10 +1,15 @@
 package com.example.messmate.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,13 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.messmate.R;
 import com.example.messmate.models.Constants;
 import com.example.messmate.screens.HomeActivity;
@@ -33,15 +41,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
     private View view;
     private EditText nameEditText, emailEditText, phoneEditText, oldPasswordEditText, newPasswordEditText,
             confirmNewPasswordEditText;
+    private CircleImageView profileImage;
     private Button saveButton, updatePassButton;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
@@ -49,6 +64,9 @@ public class ProfileFragment extends Fragment {
     private FloatingActionButton fab;
     private PopupWindow popupWindow;
     TextView totat_rent,total_meal;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int CAPTURE_IMAGE_REQUEST = 2;
+    private Uri imageUri;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -58,7 +76,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        profileImage = view.findViewById(R.id.profileImage);
         // Initialize views
         fab = view.findViewById(R.id.totalamountfloatbutton); // Assuming your FloatingActionButton id is 'totalamountfloatbutton'
 
@@ -70,12 +88,99 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Initialize Firebase components and UI elements
+        profileImage.setOnClickListener(v -> showImageSourceOptions());
+
+        loadProfileImage();
         initializeFirebase();
         initializeUIElements();
 
         return view;
     }
+
+    private void showImageSourceOptions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose an option")
+                .setItems(new CharSequence[]{"Gallery", "Camera"}, (dialog, which) -> {
+                    switch (which) {
+                        case 0: // Gallery
+                            openFileChooser();
+                            break;
+                        case 1: // Camera
+                            openCamera();
+                            break;
+                    }
+                });
+        builder.create().show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            uploadImage();
+        } else if (requestCode == CAPTURE_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageUri = getImageUriFromBitmap(photo);
+            uploadImage();
+        }
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_REQUEST);
+        }
+    }
+
+    private Uri getImageUriFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+    private void uploadImage() {
+        if (imageUri != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("user_images").child(Constants.userKey + ".jpg");
+
+            storageReference.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String downloadUrl = uri.toString();
+                        Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                        loadProfileImage();
+                    }))
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Image uploaded failed", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(requireContext(), "Please choose an image", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void loadProfileImage() {
+
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("user_images/" + Constants.userKey + ".jpg");
+
+            // Fetch the download URL
+            storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Use Glide to load the image into the ImageView
+                Glide.with(requireContext())
+                        .load(uri)
+                        .into(profileImage);
+
+            }).addOnFailureListener(exception -> {
+                // Handle any errors
+                Toast.makeText(requireContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+    }
+
 
     private void initializeFirebase() {
         database = FirebaseDatabase.getInstance();

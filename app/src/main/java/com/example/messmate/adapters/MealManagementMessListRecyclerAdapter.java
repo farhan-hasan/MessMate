@@ -5,16 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.messmate.R;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.models.SearchMessDetailsModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MealManagementMessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetailsModel, MealManagementMessListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -54,12 +60,30 @@ public class MealManagementMessListRecyclerAdapter extends FirebaseRecyclerAdapt
                 listener.onItemClick(model);
             }
         });
+        loadProfileImage(model.mess_key, holder);
 
+    }
+    private void loadProfileImage(String messKey,@NonNull ViewHolder holder) {
+
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("mess_images/" + messKey + ".jpg");
+
+        // Fetch the download URL
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+            // Use Glide to load the image into the ImageView
+            Glide.with(context)
+                    .load(uri)
+                    .into(holder.searchMessImage);
+
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+        });
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView messName, messAddress, adminPhone, availableSeats;
 
         public CardView cardView;
+        CircleImageView searchMessImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +92,7 @@ public class MealManagementMessListRecyclerAdapter extends FirebaseRecyclerAdapt
             adminPhone = itemView.findViewById(R.id.adminPhone);
             availableSeats = itemView.findViewById(R.id.availableSeatsTextView);
             cardView = itemView.findViewById(R.id.mess_list_card_view);
+            searchMessImage = itemView.findViewById(R.id.searchMessImage);
         }
     }
 }

@@ -142,6 +142,7 @@ public class SearchFragment extends Fragment {
                             messDetails.put("available_seats", availableSeats);
                             messDetails.put("name_key", messName.toLowerCase());
                             messDetails.put("address_key", messAddress.toLowerCase());
+                            messDetails.put("mess_key", messKey);
 
                             result.put(messKey, messDetails);
                         }
