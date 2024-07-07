@@ -3,7 +3,7 @@ package com.example.messmate.models;
 import com.example.messmate.adapters.SearchMessListRecyclerAdapter;
 
 public class SearchMessDetailsModel {
-    public String mess_name, mess_address, admin_phone, name_key, address_key;
+    public String mess_name, mess_address, admin_phone, name_key, address_key, mess_key;
     public Long available_seats;
 
 

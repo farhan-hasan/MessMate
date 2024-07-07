@@ -29,44 +29,74 @@
         android:layout_above="@+id/rentMessDetailsCard"
         >
 
+
         <RelativeLayout
             android:id="@+id/messNameRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="20dp">
+            android:paddingRight="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/rentMessImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/titlehousesvg"
+                />
 
             <TextView
                 android:id="@+id/rentDetailsMessName"
+                android:layout_toRightOf="@+id/rentMessImage"
+                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="Mess Name"
                 android:textColor="@color/primary_color"
                 android:fontFamily="@font/roboto_bold"
-                android:textSize="32dp"
+                android:textSize="35dp"
                 />
 
-            <Button
-                style="?android:attr/absListViewStyle"
-                android:id="@+id/residentAddButton"
-                android:layout_alignParentEnd="true"
-                android:backgroundTint="@color/primary_color"
-                android:layout_width="100dp"
-                android:textColor="#FFF"
-                android:layout_height="50dp"
-                android:text="Add" />
+<!--            <Button-->
+<!--                style="?android:attr/absListViewStyle"-->
+<!--                android:id="@+id/residentAddButton"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:backgroundTint="@color/primary_color"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:textColor="#FFF"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:text="Add" />-->
 
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/messNameRelativeLayout"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:id="@+id/rentResidentListRecyclerView"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/residentAddButton"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="right"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/primary_color"
+            android:clickable="true"
+            android:scaleType="center"
+            android:src="@drawable/baseline_add_24"
+            app:tint="#FFF" />
 
 
 

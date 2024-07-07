@@ -18,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.messmate.R;
 import com.example.messmate.models.UserDetailsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,11 +28,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentListRecyclerAdapter.ViewHolder> {
     Context context;
@@ -76,8 +81,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         UserDetailsModel resident = residentList.get(position);
         final Boolean[] isPaid = {false};
-
-
         // Initial paid button state
         {
             DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
@@ -111,6 +114,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
             });
         }
 
+        loadProfileImages(holder, resident);
 
         holder.paidButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,39 +189,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
                         dialog.show();
                     }
-
-
-
-
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.residentName.getContext());
-//                    builder.setTitle("Are you sure?");
-//                    builder.setMessage("Are you sure the person did not pay the rent?");
-//
-//                    builder.setPositiveButton("Yes", (dialog, which) -> {
-//                        holder.paidButton.setText("Unpaid");
-//                        holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red)));
-//                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-//                                .child("Messes")
-//                                .child(resident.getMess_name())
-//                                .child("residents")
-//                                .child(resident.getKey());
-//                        messesRef.child("rent").setValue(false).addOnCompleteListener(task -> {
-//                            if(task.isSuccessful()) {
-//                                setTotalRentAmount(messKey);
-//                                //resetActivity();
-//                            }
-//                            else {
-//                                Toast.makeText(context, "Failed to set to Unpaid", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    });
-//
-//                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                        }
-//                    });
-//                    builder.show();
                 }
                 else {
 
@@ -283,37 +254,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
                         dialog.show();
                     }
 
-
-
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.residentName.getContext());
-//                    builder.setTitle("Are you sure?");
-//                    builder.setMessage("Are you sure the person paid the rent?");
-//
-//                    builder.setPositiveButton("Yes", (dialog, which) -> {
-//                        holder.paidButton.setText("Paid");
-//                        holder.paidButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green)));
-//                        DatabaseReference messesRef = FirebaseDatabase.getInstance().getReference()
-//                                .child("Messes")
-//                                .child(resident.getMess_name())
-//                                .child("residents")
-//                                .child(resident.getKey());
-//                        messesRef.child("rent").setValue(true).addOnCompleteListener(task -> {
-//                            if(task.isSuccessful()) {
-//                                setTotalRentAmount(messKey);
-//                                //resetActivity();
-//                            }
-//                            else {
-//                                Toast.makeText(context, "Failed to set to Paid", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    });
-//
-//                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                        }
-//                    });
-//                    builder.show();
                 }
 
             }
@@ -457,113 +397,24 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
                     dialog.show();
                 }
-
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(holder.residentName.getContext());
-//                builder.setTitle("Are you sure?");
-//                builder.setMessage("Do you want to remove this resident from the mess?");
-//
-//                builder.setPositiveButton("Yes", (dialog, which) -> {
-//                    final int[] numberOfSeats = {0};
-//                    final int[] availableSeats = {0};
-//
-//
-//                    FirebaseDatabase.getInstance().getReference().child("Messes")
-//                            .child(resident.getMess_name())
-//                            .child("residents")
-//                            .child(resident.getKey()).removeValue().addOnCompleteListener(task1 -> {
-//                        if(task1.isSuccessful()) {
-//                            Toast.makeText(context, "Resident removed successfully", Toast.LENGTH_SHORT).show();
-//                            updateList(resident.getMess_name());
-//                        }
-//                        else {
-//                            Toast.makeText(context, "Failed to remove resident", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//
-//                    // updating user details
-//                    {
-//
-//                        Map<String, Object> updateData = new HashMap<>();
-//                        updateData.put("mess_name", "");
-//                        updateData.put("is_resident", false);
-//                        updateData.put("breakfast_amount", 0);
-//                        updateData.put("lunch_amount", 0);
-//                        updateData.put("dinner_amount", 0);
-//                        updateData.put("meal_amount", 0);
-//                        FirebaseDatabase.getInstance().getReference().child("users")
-//                                .child(resident.getKey())
-//                                .updateChildren(updateData).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> task) {
-//                                        if (task.isSuccessful()) {
-//                                            Toast.makeText(context, "User details updated", Toast.LENGTH_SHORT).show();
-//                                            setTotalRentAmount(messKey);
-//                                        } else {
-//                                            Toast.makeText(context, "Failed to update user details", Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    }
-//                                });
-//                    }
-//
-//                    // Fetching number of seats
-//                    {
-//                        DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
-//                                .child("Messes")
-//                                .child(resident.getMess_name());
-//
-//                        messRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                numberOfSeats[0] = snapshot.child("number_of_seats").getValue(Integer.class);
-//                                // Incrementing available seats by one
-//                                {
-//                                    // Fetching available seats
-//                                    DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
-//                                            .child("Messes")
-//                                            .child(resident.getMess_name());
-//
-//                                    messRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                            availableSeats[0] = snapshot.child("available_seats").getValue(Integer.class);
-//                                            // incrementing available seats
-//                                            {
-//                                                DatabaseReference messRef = FirebaseDatabase.getInstance().getReference()
-//                                                        .child("Messes")
-//                                                        .child(resident.getMess_name());
-//                                                messRef.child("available_seats").setValue(Math.min(availableSeats[0] + 1, numberOfSeats[0]));
-//                                            }
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancelled(@NonNull DatabaseError error) {
-//                                            Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//                                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//
-//
-//                });
-//
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(context, "Resident not removed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                builder.show();
             }
         });
+
+    }
+
+    public void loadProfileImages(@NonNull ViewHolder holder, UserDetailsModel resident) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("user_images/" + resident.getKey() + ".jpg");
+
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(context)
+                    .load(uri)
+                    .into(holder.residentRentImage);
+
+        }).addOnFailureListener(exception -> {
+        });
+    }
+
+    public void refetchProfileImages() {
 
     }
 
@@ -649,7 +500,6 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
 
     }
 
-
     @Override
     public int getItemCount() {
         return residentList.size();
@@ -712,6 +562,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView residentName, residentEmail, residentPhone;
         Button paidButton, removeButton;
+        CircleImageView residentRentImage;
         public CardView cardView;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -721,6 +572,7 @@ public class ResidentListRecyclerAdapter extends RecyclerView.Adapter<ResidentLi
             paidButton = itemView.findViewById(R.id.paidButton);
             removeButton = itemView.findViewById(R.id.removeButton);
             cardView = itemView.findViewById(R.id.resident_card_view);
+            residentRentImage = itemView.findViewById(R.id.residentRentImage);
         }
     }
 
