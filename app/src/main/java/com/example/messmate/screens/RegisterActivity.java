@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -13,14 +18,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.messmate.R;
+import com.example.messmate.models.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -72,6 +84,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private Bitmap drawPersonIcon() {
+        Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(0, 0, 200, 200, paint);
+        return bitmap;
     }
 
     private void PerForAuth() {
@@ -129,6 +149,37 @@ public class RegisterActivity extends AppCompatActivity {
                                     });
 
 
+                        }
+
+                        {
+                            String key = email.replace(".", "");
+                            // Generate a dummy image
+                            Bitmap bitmap = drawPersonIcon();
+
+                            // Convert the bitmap to a byte array
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+
+                            // Upload the byte array to Firebase Storage
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference storageRef = storage.getReference();
+                            StorageReference imagesRef = storageRef.child("user_images/" + key + ".jpg");
+
+                            UploadTask uploadTask = imagesRef.putBytes(data);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                    System.out.println("Upload failed: " + exception.getMessage());
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // Handle successful uploads
+                                    System.out.println("Upload successful!");
+                                }
+                            });
                         }
 
                         startActivity(intent);

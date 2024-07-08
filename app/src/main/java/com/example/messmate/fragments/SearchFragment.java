@@ -91,7 +91,6 @@ public class SearchFragment extends Fragment {
                 } else if(selectedItem.equals("Address")) {
                     selectedItem = "address_key";
                 }
-                Log.d("SPINNER", selectedItem);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
