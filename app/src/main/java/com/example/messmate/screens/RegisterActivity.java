@@ -150,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                         }
-
+                        // save a dummy image for user in firebase storage
                         {
                             String key = email.replace(".", "");
                             // Generate a dummy image

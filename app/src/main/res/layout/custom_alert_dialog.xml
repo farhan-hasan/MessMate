@@ -11,12 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Custom Title"
+        android:textColor="@color/primary_color"
         android:textAppearance="?attr/textAppearanceHeadline6"/>
 
     <TextView
         android:id="@+id/dialog_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_color"
         android:text="Custom message"
         android:layout_marginTop="8dp"
         android:textAppearance="?attr/textAppearanceBody1"/>
