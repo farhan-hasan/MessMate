@@ -5,6 +5,9 @@ import static android.app.Activity.RESULT_OK;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +46,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.orhanobut.dialogplus.DialogPlus;
 
 import java.io.ByteArrayOutputStream;
@@ -69,12 +74,59 @@ public class RentFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 addMess();
             }
         });
         loadFragment();
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private Bitmap drawRentIcon() {
+        Bitmap bitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(0, 0, 200, 200, paint);
+        return bitmap;
+    }
+
+    public void saveRentDummyImage(String messKey) {
+
+        // Generate a dummy image
+        Bitmap bitmap = drawRentIcon();
+
+        // Convert the bitmap to a byte array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        // Upload the byte array to Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imagesRef = storageRef.child("mess_images/" + messKey + ".jpg");
+
+        UploadTask uploadTask = imagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                System.out.println("Upload failed: " + exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Handle successful uploads
+                System.out.println("Upload successful!");
+
+
+
+
+
+            }
+        });
     }
 
     public void addMess() {
@@ -94,6 +146,9 @@ public class RentFragment extends Fragment {
         poppupAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
 
                 Map<String,Object> messDetails = new HashMap<>();
                 Map<String,Object> breakFastDetails = new HashMap<>();
@@ -157,11 +212,18 @@ public class RentFragment extends Fragment {
 
                                     String messKey = messName.toLowerCase() + "_" + messAddress.toLowerCase();
 
+                                    saveRentDummyImage(messKey.replace(" ",""));
+
+                                    new Handler().postDelayed(() -> {
+
+                                    }, 2000);
+
                                     FirebaseDatabase.getInstance().getReference().child("Messes")
                                             .child(messKey.replace(" ","")).setValue(messDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
                                                     Toast.makeText(requireContext(), "Mess added successfully", Toast.LENGTH_SHORT).show();
+
                                                     dialogPlus.dismiss();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {

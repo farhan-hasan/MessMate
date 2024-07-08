@@ -304,8 +304,6 @@ public class RentMessDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final int[] availableSeats = {0};
 
-
-
                 Map<String, Object> data = new HashMap<>();
 
                 data.put("breakfast", false);
@@ -348,7 +346,7 @@ public class RentMessDetailsActivity extends AppCompatActivity {
                                         if (dbUser != null) {
                                             boolean isResident = dataSnapshot.child("is_resident").getValue(Boolean.class);
                                             if (isResident == true) {
-                                                Toast.makeText(RentMessDetailsActivity.this, "Resident already in a mess", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(RentMessDetailsActivity.this, "Resident already in another mess", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
 

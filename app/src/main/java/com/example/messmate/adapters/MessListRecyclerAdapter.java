@@ -33,6 +33,7 @@ import com.example.messmate.models.ImageSelectionListener;
 import com.example.messmate.models.MessDetailsModel;
 import com.example.messmate.screens.HomeActivity;
 import com.example.messmate.screens.LoginActivity;
+import com.example.messmate.screens.RegisterActivity;
 import com.example.messmate.screens.RentMessDetailsActivity;
 import com.firebase.ui.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -72,8 +73,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
         this.context = context;
         this.listener = listener;
     }
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,8 +98,6 @@ public class MessListRecyclerAdapter extends FirebaseRecyclerAdapter<MessDetails
         holder.messRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 {
                     View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null);

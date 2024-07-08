@@ -183,7 +183,7 @@ public class MealRequestActivity extends AppCompatActivity {
                                 });
                             }
 
-                            // Meal amount increment
+                            // Meal breakfast increment
                             {
                                 // Fetch lunch_amount
                                 DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
@@ -198,7 +198,7 @@ public class MealRequestActivity extends AppCompatActivity {
                                             breakfastAmount = snapshot.child("breakfast_amount").getValue(Integer.class);
                                             mealAmount = snapshot.child("meal_amount").getValue(Integer.class);
                                         }
-                                        // Increase lunch amount
+                                        // Increase breakfast amount
                                         {
                                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users")
                                                     .child(Constants.userKey)
@@ -576,9 +576,6 @@ public class MealRequestActivity extends AppCompatActivity {
                     boolean breakfast = mealRequestData.get("breakfast");
                     boolean lunch = mealRequestData.get("lunch");
                     boolean dinner = mealRequestData.get("dinner");
-                    Log.d("FETCH_BREAKFAST", String.valueOf(breakfast));
-                    Log.d("FETCH_LUNCH", String.valueOf(lunch));
-                    Log.d("FETCH_DINNER", String.valueOf(dinner));
 
                     if(breakfast) {
                         buttonforbreakfast.setText("Remove");
