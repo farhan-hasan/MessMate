@@ -171,12 +171,11 @@ public class ProfileFragment extends Fragment {
             // Fetch the download URL
             storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                 // Use Glide to load the image into the ImageView
-                Glide.with(requireContext())
+                Glide.with(getContext())
                         .load(uri)
                         .into(profileImage);
 
             }).addOnFailureListener(exception -> {
-                // Handle any errors
                 Toast.makeText(requireContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
             });
     }
@@ -184,7 +183,7 @@ public class ProfileFragment extends Fragment {
 
     private void initializeFirebase() {
         database = FirebaseDatabase.getInstance();
-        String userId = Constants.userKey; // Replace with the actual user ID
+        String userId = Constants.userKey;
         userRef = database.getReference("users").child(userId);
     }
 
@@ -284,15 +283,12 @@ public class ProfileFragment extends Fragment {
         if (user != null) {
             user.updatePassword(newPassword).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Log.d("ProfileFragment", "Password updated successfully");
                     Toast.makeText(getActivity(), "Password updated successfully", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("ProfileFragment", "Failed to update password", task.getException());
                     Toast.makeText(getActivity(), "Failed to update password", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Log.d("ProfileFragment", "No authenticated user found");
             Toast.makeText(getActivity(), "No authenticated user found", Toast.LENGTH_SHORT).show();
         }
     }
@@ -375,7 +371,13 @@ public class ProfileFragment extends Fragment {
                             rent_amount[0] = snapshot.child("rent_per_seat").getValue(Integer.class);
                         }
                         total_meal.setText("Total Meal Cost: "+meal_amount[0]);
-                        totat_rent.setText("Total Rent Cost: "+ rent_amount[0]);
+
+                        if(rent_amount[0] == null) {
+                            totat_rent.setText("Total Rent Cost: 0");
+                        } else {
+                            totat_rent.setText("Total Rent Cost: "+ rent_amount[0]);
+                        }
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

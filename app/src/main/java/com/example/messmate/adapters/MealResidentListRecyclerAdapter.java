@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -70,8 +71,13 @@ public class MealResidentListRecyclerAdapter extends RecyclerView.Adapter<MealRe
     }
 
     public void loadProfilImages(@NonNull ViewHolder holder, UserDetailsModel resident) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("user_images/" + resident.getKey() + ".jpg");
-
+        StorageReference storageReference = null;
+        
+        try {
+            storageReference = FirebaseStorage.getInstance().getReference().child("user_images/" + resident.getKey() + ".jpg");
+        } catch (Exception e) {
+            Log.d("EXCEPTION", e.getMessage());
+        }
         // Fetch the download URL
         storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
             // Use Glide to load the image into the ImageView
@@ -82,8 +88,7 @@ public class MealResidentListRecyclerAdapter extends RecyclerView.Adapter<MealRe
             // If you prefer to use Picasso:
             // Picasso.get().load(uri).into(imageView);
         }).addOnFailureListener(exception -> {
-            // Handle any errors
-            //Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("IMAGE", resident.getKey() +  " image does not exist");
         });
     }
 

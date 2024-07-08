@@ -15,14 +15,6 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="20dp"-->
-        <!--            android:fontFamily="@font/roboto_bold"-->
-        <!--            android:text="My Profile"-->
-        <!--            android:textColor="@color/primary_color"-->
-        <!--            android:textSize="32dp" />-->
 
         <ScrollView
             android:layout_width="match_parent"

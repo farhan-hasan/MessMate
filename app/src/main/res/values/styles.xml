@@ -11,8 +11,8 @@
     </style>
 
     <style name="CustomBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="itemIconTint">@color/bg_color</item>
-        <item name="itemTextColor">@color/bg_color</item>
+        <item name="itemIconTint">#fff</item>
+        <item name="itemTextColor">#fff</item>
         <item name="backgroundTint">@color/primary_color</item>
     </style>
 
