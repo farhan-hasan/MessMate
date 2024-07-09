@@ -132,7 +132,7 @@ public class RentFragment extends Fragment {
     public void addMess() {
         final DialogPlus dialogPlus = DialogPlus.newDialog(requireContext())
                 .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.add_mess_popup))
-                .setExpanded(true, 1400)
+                .setExpanded(true, 1100)
                 .create();
 
         View popupView = dialogPlus.getHolderView();

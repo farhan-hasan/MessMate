@@ -3,13 +3,16 @@ package com.example.messmate.screens;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messmate.R;
@@ -22,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
     EditText inEmail,inPassword;
     Button LoginButton,LoginActivityRegisterButton;
-    ProgressDialog progressDialog;
+    AlertDialog progressDialog;
     FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,15 @@ public class LoginActivity extends AppCompatActivity {
 
         LoginButton = findViewById(R.id.button3);
         firebaseAuth =FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomProgressDialog);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_progress_dialog, null);
+        builder.setView(dialogView);
+
+        progressDialog = builder.create();
+        TextView progressTextView = dialogView.findViewById(R.id.progress_text);
+        progressTextView.setText("Login in progress...");
+        progressDialog.setCanceledOnTouchOutside(false);
         LoginActivityRegisterButton = findViewById(R.id.loginActivityRegisterButton);
         LoginActivityRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
             inPassword.setError("Enter 8 Characters");
         }
         else {
-            progressDialog.setMessage("Login in progress...");
-            progressDialog.setTitle("Login");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -40,7 +40,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 
 public class HomeActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
-    ProgressDialog progressDialog;
+    AlertDialog progressDialog;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +51,14 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.homeScreenToolbar);
         setSupportActionBar(toolbar);
         firebaseAuth=FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Logout in progress...");
-        progressDialog.setTitle("Logout");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomProgressDialog);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_progress_dialog, null);
+        builder.setView(dialogView);
+
+        progressDialog = builder.create();
+        TextView progressTextView = dialogView.findViewById(R.id.progress_text);
+        progressTextView.setText("Logout in progress...");
         progressDialog.setCanceledOnTouchOutside(false);
 
         bottomNavBarController();
