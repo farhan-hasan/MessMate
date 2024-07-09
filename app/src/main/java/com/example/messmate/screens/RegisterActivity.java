@@ -3,6 +3,7 @@ package com.example.messmate.screens;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,9 +13,11 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.messmate.R;
@@ -41,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText inEmail, inPassword, inName, inConfirmPassword, inPhone;
     Button RegisterButton, RegisterActivityLoginButton;
     //String emailRegex="[a-zA-Z]{3,10}\\s*[a-zA-Z]*";
-    ProgressDialog progressDialog;
+    AlertDialog progressDialog;
     FirebaseAuth firebaseAuth;
 
     FirebaseDatabase database;
@@ -62,7 +65,15 @@ public class RegisterActivity extends AppCompatActivity {
         RegisterButton = findViewById(R.id.registerButton);
         RegisterActivityLoginButton = findViewById(R.id.registerActivityLoginButton);
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this, R.style.CustomProgressDialog);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_progress_dialog, null);
+        builder.setView(dialogView);
+
+        progressDialog = builder.create();
+        TextView progressTextView = dialogView.findViewById(R.id.progress_text);
+        progressTextView.setText("Registration in progress...");
+        progressDialog.setCanceledOnTouchOutside(false);
         RegisterActivityLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,8 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         } else {
 
-            progressDialog.setMessage("Registration in progress...");
-            progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
